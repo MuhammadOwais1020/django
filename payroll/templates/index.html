@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- javaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Payroll App Home</title>
+    <!-- CSS -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            height: 7vh;
+            text-align: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .side-bar {
+            height: 92vh;
+        }
+
+        .side-bar div {
+            border-bottom: solid 1px rgb(214, 214, 214);
+        }
+
+        .side-bar div button {
+            color: white;
+        }
+
+        .create-business,
+        .create-employee {
+            display: none;
+        }
+
+        #add-employee-banking-details,
+        #add-employee-banking-details-note {
+            display: none;
+        }
+
+        #personal-information-section,
+        #earnings-section,
+        #tax-free-benefits-section,
+        #add-salary-deduction-section,
+        #add-payment-terms-section,
+        #add-employee-banking-details-section,
+        #previous-employment-earnings-section {
+            display: none;
+        }
+
+        #b-select-payement-frequency-section,
+        #b-add-start-dates-section,
+        #b-company-banking-details-section {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- header -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 bg-info header">
+                <h2>Payroll App</h2>
+            </div>
+        </div>
+    </div>
+    {% if login != 'success'%}
+    <br>
+    <!-- UserLogin -->
+    <form method="post" action="{%url 'userLogin'%}" role="form">
+        {% csrf_token %} {{form}}
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <h2>User Sign In</h2>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" />
+                </div>
+                <br />
+                <button type="submit" class="btn btn-success" id="width-100">
+                    Log In
+                </button>
+                <br />
+                <br />{% if login == 'error' %}
+                <div class="form-group">
+                    <div class="alert alert-danger" id="alert-message">
+                        <strong>Error!</strong> Invalid Username and Password.
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-sm-4">
+                <h1>{{first_name}}</h1>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+    <!-- if login successfull -->
+    {% if login == 'success'%}
+    <!-- check account type is Business-->
+    {% if account_type == "Business"%}
+    <!-- Business User Dashboard -->
+    <div class="continer-fluid">
+        <div class="row">
+            <!-- Side Bar -->
+            <div class="col-sm-2 bg-info side-bar">
+                <div>
+                    <button class="btn" id="d-profile">Profile</button>
+                </div>
+                <div>
+                    <button class="btn" id="d-create-business">Create Business</button>
+                </div>
+                <div>
+                    <button class="btn" id="d-show-business-list">Show Business List</button>
+                </div>
+                <div>
+                    <button class="btn" id="d-create-employee">Create Employee</button>
+                </div>
+                <div>
+                    <button class="btn" id="d-show-employee-list">Show Employees List</button>
+                </div>
+                <div>
+                    <form method="post" action="{%url 'logout'%}" role="form">
+                        {% csrf_token %} {{form}}
+                        <button type="submit" class="btn" id="logout">Logout</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Content Window -->
+            <div class="col-sm-9">
+                <h2 style="text-align: center;">Business User Dashboard</h2>
+                <hr>
+                <!-- Show Profile -->
+                <div class="profile">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3>Name: {{first_name}} {{last_name}}</h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>Mobile Number: {{mobile_number}}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3>Email: {{email}}</h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>Designation: {{account_type}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <!-- Create Business -->
+                <div class="create-business">
+                    <h1>Create Business</h1>
+                    <span>Progress Bar</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%"
+                            id="b-progress-bar">
+                            0% Complete
+                        </div>
+                    </div>
+
+                    <section id="b-business-details-section">
+                        <h3>Step - 1 Business Details</h3>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="business-name">Business Name</label>
+                                    <input type="text" class="form-control" id="business-name" name="business-name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="street1">Street 1</label>
+                                    <input type="text" class="form-control" name="street1" id="street1" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="street2">Street 2</label>
+                                    <input type="text" class="form-control" name="street2" id="street2" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="city-town">City Town</label>
+                                    <input type="text" class="form-control" name="city-town" id="city-town" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="postal-code">Postal Code</label>
+                                    <input type="text" class="form-control" name="postal-code" id="postal-code" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="parish">Parish</label>
+                                    <input type="text" class="form-control" name="parish" id="parish" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <input type="text" class="form-control" name="country" id="country"
+                                        value="Jamaica" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="TRN">Tax Registration Number</label>
+                                    <input type="numeric" name="TRN" class="form-control" id="TRN" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="NIS">National Insurance Scheme</label>
+                                    <input type="numeric" name="NIS" class="form-control" id="NIS" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="business-start-date">Business Start Date</label>
+                                    <input type="date" name="business-start-date" class="form-control"
+                                        id="business-start-date" />
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="b-next-to-step-2">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="b-select-payement-frequency-section">
+                        <h3>Step - 2 Select Payment Frequency</h3>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Pay Frequency</th>
+                                    <th>Number of Periods</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="pay-frequency"
+                                                id="monthly" />
+                                        </div>
+                                    </td>
+                                    <td>Monthly</td>
+                                    <td>12</td>
+                                    <td id="pay-frequency1">Inactive</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="pay-frequency"
+                                                id="fortnightly" />
+                                        </div>
+                                    </td>
+                                    <td>Fortnightly</td>
+                                    <td>26</td>
+                                    <td id="pay-frequency2">Inactive</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="pay-frequency"
+                                                id="bi-weekly" />
+                                        </div>
+                                    </td>
+                                    <td>Bi-weekly</td>
+                                    <td>24</td>
+                                    <td id="pay-frequency3">Inactive</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="pay-frequency"
+                                                id="weekly" />
+                                        </div>
+                                    </td>
+                                    <td>Weekly</td>
+                                    <td>52</td>
+                                    <td id="pay-frequency4">Inactive</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="b-back-to-step-1">&lt; Back</button>
+                                <button class="btn btn-success" id="b-next-to-step-3">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="b-add-start-dates-section">
+                        <h3>Step - 3 Add Start Dates</h3>
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>Pay Frequency</td>
+                                    <td id="selected-pay-frequency">[xyz]</td>
+                                </tr>
+                                <tr>
+                                    <td>Start Date</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="date" name="pay-start-date" class="form-control">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>End Date</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="date" name="pay-end-date" class="form-control">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Period Number</td>
+                                    <td id="selected-period-number">[xyz]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="b-back-to-step-2">&lt; Back</button>
+                                <button class="btn btn-success" id="b-next-to-step-4">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="b-company-banking-details-section">
+                        <h3>Company Banking Details</h3>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="account-name">Name on Account</label>
+                                    <input type="text" class="form-control" name="account-name" id="account-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="account-number">Account Number</label>
+                                    <input type="numeric" class="form-control" name="account-number"
+                                        id="account-number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group"><label for="bank-name">Bank Name</label>
+                                    <input type="text" class="form-control" id="bank-name" name="bank-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group"><label for="branch-name">Branch Name</label>
+                                    <input type="text" class="form-control" id="branch-name" name="branch-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group"><label for="account-type">Account Type</label>
+                                    <input type="text" class="form-control" id="account-type" name="account-type">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="b-back-to-step-3">&lt; Back</button>
+                                <button class="btn btn-success" id="b-next-to-end">Save</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- Show Business List -->
+                <div class="show-business-list"></div>
+                <!-- Create Employee -->
+                <div class="create-employee">
+                    <h1>Add Employee</h1>
+                    <span>Progress Bar</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%" id="progress-bar">
+                            0% Complete
+                        </div>
+                    </div>
+                    <section class="" id="basic-information-section">
+                        <h3>Step 1 - Bsic Information</h3>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="first-name">First Name</label>
+                                    <input type="text" class="form-control" name="first-name" id="first-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="last-name">Last Name</label>
+                                    <input type="text" class="form-control" name="last-name" id="last-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="job-title">Job Title</label>
+                                    <input type="text" class="form-control" name="job-title" id="job-title">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="department">Department</label>
+                                    <input type="text" class="form-control" name="department" id="department">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="start-date">Start Date</label>
+                                    <input type="date" class="form-control" name="start-date" id="start-date">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="work-address">Work Address</label>
+                                    <input type="text" class="form-control" name="work-address" id="work-address">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-success" id="next-to-step-2">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="personal-information-section">
+                        <h3>Step 2 - Personal Information</h3>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="date-of-birth">Date of Birth</label>
+                                    <input type="date" name="date-of-birth" id="date-of-birth" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="trn">TRN</label>
+                                    <input type="numeric" name="trn" id="trn" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="nis">NIS</label>
+                                    <input type="numeric" name="nis" id="nis" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="contact-number">Contact Number</label>
+                                    <input type="numeric" name="contact-number" id="contact-number"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="personal-email">Personal Email Address</label>
+                                    <input type="email" name="personal-email" id="personal-email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="next-of-kin(full-name)">Next of Kin (Full Name)</label>
+                                    <input type="text" name="next-of-kin(full-name)" id="next-of-kin(full-name)"
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="contact-number-of-kin">Contact Number of Next of Kin</label>
+                                    <input type="numeric" name="contact-number-of-kin" id="contact-number-of-kin"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="address-line-1">Address Line 1</label>
+                                    <input type="text" name="address-line-1" id="address-line-1" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="address-line-2">Address Line 2</label>
+                                    <input type="text" name="address-line-2" id="address-line-2" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="city-town">City/Town</label>
+                                    <input type="text" name="city-town" id="city-town" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="postal-code">Postal Code</label>
+                                    <input type="numeric" name="postal-code" id="postal-code" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="parish">Parish</label>
+                                    <input type="text" name="parish" id="parish" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <input type="text" name="country" id="country" class="form-control" value="Jamaica">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-1">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-3">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="earnings-section">
+                        <h3>Step 3 - Earnings</h3>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="pay-period">Pay Period</label>
+                                    <select name="pay-period" id="pay-period" class="form-select">
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="Monthly">Monthly (12)</option>
+                                        <option value="Fortnightly">Fortnightly (26)</option>
+                                        <option value="Bi-Weekly">Bi-Weekly (24)</option>
+                                        <option value="Weekly">Weekly (52)</option>
+                                        <option value="Hourly">Hourly</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="basic-pay">Basic Pay</label>
+                                    <input type="numeric" class="form-control" id="basic-pay" name="basic-pay">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="from-group">
+                                    <label for="add-other-benefits-1">Add Other Benefits 1</label>
+                                    <select name="add-other-benefits-1" id="add-other-benefits-1" class="form-select">
+                                        <option value="" selected disabled>Select</option>
+                                        {% for a in earning_type %}
+                                        <option value="{{a.earning_type}}">{{a.earning_type}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="add-other-benefits-1-value">Enter Value for Benefits 1</label>
+                                    <input type="numeric" class="form-control" id="add-other-benefits-1-value"
+                                        name="add-other-benefits-1-value">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="from-group">
+                                    <label for="add-other-benefits-2">Add Other Benefits 2</label>
+                                    <select name="add-other-benefits-2" id="add-other-benefits-2" class="form-select">
+                                        <option value="" selected disabled>Select</option>
+                                        {% for a in earning_type %}
+                                        <option value=" {{a.earning_type}}">{{a.earning_type}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="add-other-benefits-2-value">Enter Value for Benefits 2</label>
+                                    <input type="numeric" class="form-control" id="add-other-benefits-2-value"
+                                        name="add-other-benefits-2-value">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="from-group">
+                                    <label for="add-other-benefits-3">Add Other Benefits 3</label>
+                                    <select name="add-other-benefits-3" id="add-other-benefits-3" class="form-select">
+                                        <option value="" selected disabled>Select</option>
+                                        {% for a in earning_type %}
+                                        <option value="{{a.earning_type}}">{{a.earning_type}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="add-other-benefits-3-value">Enter Value for Benefits 3</label>
+                                    <input type="numeric" class="form-control" id="add-other-benefits-3-value"
+                                        name="add-other-benefits-3-value">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="total-gross-pay">Total Gross Pay</label>
+                                <input type="numeric" name="total-gross-pay" id="total-gross-pay" class="form-control"
+                                    readonly>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-2">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-4">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="tax-free-benefits-section">
+                        <h3>Step - 4 Tax Free Benefits</h3>
+                        <div id="tax-pay-benefits-div">
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-3">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-5">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="add-salary-deduction-section">
+                        <h3>Step - 5 Add Salary Deductions (Non-statutory)</h3>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="deduction-type">Deduction Type</label>
+                                    <input type="text" name="deduction-type" id="deduction-type" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="deduction-amount">Deduction Amount</label>
+                                    <input type="numeric" name="deduction-amount" id="deduction-amount"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="effective-date-last-payment-date">Effective Date/Last Payemnt
+                                        Date</label>
+                                    <input type="date" name="effective-date-last-payment-date"
+                                        id="effective-date-last-payment-date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="deduction-status">Status</label>
+                                    <input type="text" name="deduction-status" id="deduction-status"
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-4">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-6">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="add-payment-terms-section">
+                        <h3>Step - 6 Add Payment Terms</h3>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="direct-deposit"
+                                        name="payemnt-terms" value="Direct Deposit"> Direct Deposit
+                                    <label for="direct-deposit" class="form-check-label"></label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="cheque" name="payemnt-terms"
+                                        value="Cheque">
+                                    Cheque
+                                    <label for="cheque" class="form-check-label"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-5">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-7">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="add-employee-banking-details-section">
+                        <div id="add-employee-banking-details-note">
+                            <span>Note: You have selected Cheque in Banking Details, So just click on Next</span>
+                        </div>
+                        <div id="add-employee-banking-details">
+                            <br>
+                            <hr>
+                            <h3>Step - 7 Add Employee Banking Details</h3>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emp-bank-name">Bank Name</label>
+                                        <input type="text" class="form-control" id="emp-bank-name" name="emp-bank-name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emp-branch">Branch</label>
+                                        <input type="text" class="form-control" id="emp-branch" name="emp-branch">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emp-account-number">Account Number</label>
+                                        <input type="Numeric" class="form-control" id="emp-account-number"
+                                            name="emp-account-number">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emp-account-type">Account Type</label>
+                                        <input type="text" class="form-control" id="emp-account-type"
+                                            name="emp-account-type">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-6">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-8">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="previous-employment-earnings-section">
+                        <h3 id="step-count-update">Step - 7 Previous Employment Earnings & Taxes</h3>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-7">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-end">Save</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- Show Employee List -->
+                <div class="show-employee-list"></div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- check account type is Accounting -->
+    {% if account_type == "Accounting"%}
+    <!-- Accounting User Dashboard -->
+    <div class="continer-fluid">
+        <div class="row">
+            <!-- Side Bar -->
+            <div class="col-sm-2 bg-info side-bar">
+                <div>
+                    <button class="btn" id="d-profile">Profile</button>
+                </div>
+                <div>
+                    <button class="btn" id="d-create-business">Create Business</button>
+                </div>
+                <div>
+                    <button class="btn" id="d-show-business-list">Show Business List</button>
+                </div>
+                <div>
+                    <button class="btn" id="d-create-employee">Create Employee</button>
+                </div>
+                <div>
+                    <button class="btn" id="d-show-employee-list">Show Employees List</button>
+                </div>
+                <div>
+                    <form method="post" action="{%url 'logout'%}" role="form">
+                        {% csrf_token %} {{form}}
+                        <button type="submit" class="btn" id="logout">Logout</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Content Window -->
+            <div class="col-sm-9">
+                <h2 style="text-align: center;">Accounting User Dashboard</h2>
+                <hr>
+                <!-- Show Profile -->
+                <div class="profile">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3>Name: {{first_name}} {{last_name}}</h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>Mobile Number: {{mobile_number}}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3>Email: {{email}}</h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>Designation: {{account_type}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <!-- Create Business -->
+                <div class="create-business">
+                    <h1>Create Business</h1>
+                    <span>Progress Bar</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%"
+                            id="b-progress-bar">
+                            0% Complete
+                        </div>
+                    </div>
+
+                    <section id="b-business-details-section">
+                        <h3>Step - 1 Business Details</h3>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="business-name">Business Name</label>
+                                    <input type="text" class="form-control" id="business-name" name="business-name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="street1">Street 1</label>
+                                    <input type="text" class="form-control" name="street1" id="street1" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="street2">Street 2</label>
+                                    <input type="text" class="form-control" name="street2" id="street2" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="city-town">City Town</label>
+                                    <input type="text" class="form-control" name="city-town" id="city-town" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="postal-code">Postal Code</label>
+                                    <input type="text" class="form-control" name="postal-code" id="postal-code" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="parish">Parish</label>
+                                    <input type="text" class="form-control" name="parish" id="parish" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <input type="text" class="form-control" name="country" id="country"
+                                        value="Jamaica" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="TRN">Tax Registration Number</label>
+                                    <input type="numeric" name="TRN" class="form-control" id="TRN" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="NIS">National Insurance Scheme</label>
+                                    <input type="numeric" name="NIS" class="form-control" id="NIS" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="business-start-date">Business Start Date</label>
+                                    <input type="date" name="business-start-date" class="form-control"
+                                        id="business-start-date" />
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="b-next-to-step-2">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="b-select-payement-frequency-section">
+                        <h3>Step - 2 Select Payment Frequency</h3>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Pay Frequency</th>
+                                    <th>Number of Periods</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="pay-frequency"
+                                                id="monthly" />
+                                        </div>
+                                    </td>
+                                    <td>Monthly</td>
+                                    <td>12</td>
+                                    <td id="pay-frequency1">Inactive</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="pay-frequency"
+                                                id="fortnightly" />
+                                        </div>
+                                    </td>
+                                    <td>Fortnightly</td>
+                                    <td>26</td>
+                                    <td id="pay-frequency2">Inactive</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="pay-frequency"
+                                                id="bi-weekly" />
+                                        </div>
+                                    </td>
+                                    <td>Bi-weekly</td>
+                                    <td>24</td>
+                                    <td id="pay-frequency3">Inactive</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="pay-frequency"
+                                                id="weekly" />
+                                        </div>
+                                    </td>
+                                    <td>Weekly</td>
+                                    <td>52</td>
+                                    <td id="pay-frequency4">Inactive</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="b-back-to-step-1">&lt; Back</button>
+                                <button class="btn btn-success" id="b-next-to-step-3">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="b-add-start-dates-section">
+                        <h3>Step - 3 Add Start Dates</h3>
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>Pay Frequency</td>
+                                    <td id="selected-pay-frequency">[xyz]</td>
+                                </tr>
+                                <tr>
+                                    <td>Start Date</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="date" name="pay-start-date" class="form-control">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>End Date</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="date" name="pay-end-date" class="form-control">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Period Number</td>
+                                    <td id="selected-period-number">[xyz]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="b-back-to-step-2">&lt; Back</button>
+                                <button class="btn btn-success" id="b-next-to-step-4">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="b-company-banking-details-section">
+                        <h3>Company Banking Details</h3>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="account-name">Name on Account</label>
+                                    <input type="text" class="form-control" name="account-name" id="account-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="account-number">Account Number</label>
+                                    <input type="numeric" class="form-control" name="account-number"
+                                        id="account-number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group"><label for="bank-name">Bank Name</label>
+                                    <input type="text" class="form-control" id="bank-name" name="bank-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group"><label for="branch-name">Branch Name</label>
+                                    <input type="text" class="form-control" id="branch-name" name="branch-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group"><label for="account-type">Account Type</label>
+                                    <input type="text" class="form-control" id="account-type" name="account-type">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="b-back-to-step-3">&lt; Back</button>
+                                <button class="btn btn-success" id="b-next-to-end">Save</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- Show Business List -->
+                <div class="show-business-list"></div>
+                <!-- Create Employee -->
+                <div class="create-employee">
+                    <h1>Add Employee</h1>
+                    <span>Progress Bar</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%" id="progress-bar">
+                            0% Complete
+                        </div>
+                    </div>
+                    <section class="" id="basic-information-section">
+                        <h3>Step 1 - Bsic Information</h3>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="first-name">First Name</label>
+                                    <input type="text" class="form-control" name="first-name" id="first-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="last-name">Last Name</label>
+                                    <input type="text" class="form-control" name="last-name" id="last-name">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="job-title">Job Title</label>
+                                    <input type="text" class="form-control" name="job-title" id="job-title">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="department">Department</label>
+                                    <input type="text" class="form-control" name="department" id="department">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="start-date">Start Date</label>
+                                    <input type="date" class="form-control" name="start-date" id="start-date">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="work-address">Work Address</label>
+                                    <input type="text" class="form-control" name="work-address" id="work-address">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-success" id="next-to-step-2">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="personal-information-section">
+                        <h3>Step 2 - Personal Information</h3>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="date-of-birth">Date of Birth</label>
+                                    <input type="date" name="date-of-birth" id="date-of-birth" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="trn">TRN</label>
+                                    <input type="numeric" name="trn" id="trn" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="nis">NIS</label>
+                                    <input type="numeric" name="nis" id="nis" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="contact-number">Contact Number</label>
+                                    <input type="numeric" name="contact-number" id="contact-number"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="personal-email">Personal Email Address</label>
+                                    <input type="email" name="personal-email" id="personal-email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="next-of-kin(full-name)">Next of Kin (Full Name)</label>
+                                    <input type="text" name="next-of-kin(full-name)" id="next-of-kin(full-name)"
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="contact-number-of-kin">Contact Number of Next of Kin</label>
+                                    <input type="numeric" name="contact-number-of-kin" id="contact-number-of-kin"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="address-line-1">Address Line 1</label>
+                                    <input type="text" name="address-line-1" id="address-line-1" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="address-line-2">Address Line 2</label>
+                                    <input type="text" name="address-line-2" id="address-line-2" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="city-town">City/Town</label>
+                                    <input type="text" name="city-town" id="city-town" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="postal-code">Postal Code</label>
+                                    <input type="numeric" name="postal-code" id="postal-code" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="parish">Parish</label>
+                                    <input type="text" name="parish" id="parish" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <input type="text" name="country" id="country" class="form-control" value="Jamaica">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-1">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-3">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="earnings-section">
+                        <h3>Step 3 - Earnings</h3>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="pay-period">Pay Period</label>
+                                    <select name="pay-period" id="pay-period" class="form-select">
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="Monthly">Monthly (12)</option>
+                                        <option value="Fortnightly">Fortnightly (26)</option>
+                                        <option value="Bi-Weekly">Bi-Weekly (24)</option>
+                                        <option value="Weekly">Weekly (52)</option>
+                                        <option value="Hourly">Hourly</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="basic-pay">Basic Pay</label>
+                                    <input type="numeric" class="form-control" id="basic-pay" name="basic-pay">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="from-group">
+                                    <label for="add-other-benefits-1">Add Other Benefits 1</label>
+                                    <select name="add-other-benefits-1" id="add-other-benefits-1" class="form-select">
+                                        <option value="" selected disabled>Select</option>
+                                        {% for a in earning_type %}
+                                        <option value="{{a.earning_type}}">{{a.earning_type}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="add-other-benefits-1-value">Enter Value for Benefits 1</label>
+                                    <input type="numeric" class="form-control" id="add-other-benefits-1-value"
+                                        name="add-other-benefits-1-value">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="from-group">
+                                    <label for="add-other-benefits-2">Add Other Benefits 2</label>
+                                    <select name="add-other-benefits-2" id="add-other-benefits-2" class="form-select">
+                                        <option value="" selected disabled>Select</option>
+                                        {% for a in earning_type %}
+                                        <option value=" {{a.earning_type}}">{{a.earning_type}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="add-other-benefits-2-value">Enter Value for Benefits 2</label>
+                                    <input type="numeric" class="form-control" id="add-other-benefits-2-value"
+                                        name="add-other-benefits-2-value">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="from-group">
+                                    <label for="add-other-benefits-3">Add Other Benefits 3</label>
+                                    <select name="add-other-benefits-3" id="add-other-benefits-3" class="form-select">
+                                        <option value="" selected disabled>Select</option>
+                                        {% for a in earning_type %}
+                                        <option value="{{a.earning_type}}">{{a.earning_type}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="add-other-benefits-3-value">Enter Value for Benefits 3</label>
+                                    <input type="numeric" class="form-control" id="add-other-benefits-3-value"
+                                        name="add-other-benefits-3-value">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="total-gross-pay">Total Gross Pay</label>
+                                <input type="numeric" name="total-gross-pay" id="total-gross-pay" class="form-control"
+                                    readonly>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-2">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-4">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="tax-free-benefits-section">
+                        <h3>Step - 4 Tax Free Benefits</h3>
+                        <div id="tax-pay-benefits-div">
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-3">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-5">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="add-salary-deduction-section">
+                        <h3>Step - 5 Add Salary Deductions (Non-statutory)</h3>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="deduction-type">Deduction Type</label>
+                                    <input type="text" name="deduction-type" id="deduction-type" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="deduction-amount">Deduction Amount</label>
+                                    <input type="numeric" name="deduction-amount" id="deduction-amount"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="effective-date-last-payment-date">Effective Date/Last Payemnt
+                                        Date</label>
+                                    <input type="date" name="effective-date-last-payment-date"
+                                        id="effective-date-last-payment-date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="deduction-status">Status</label>
+                                    <input type="text" name="deduction-status" id="deduction-status"
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-4">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-6">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="add-payment-terms-section">
+                        <h3>Step - 6 Add Payment Terms</h3>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="direct-deposit"
+                                        name="payemnt-terms" value="Direct Deposit"> Direct Deposit
+                                    <label for="direct-deposit" class="form-check-label"></label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="cheque" name="payemnt-terms"
+                                        value="Cheque">
+                                    Cheque
+                                    <label for="cheque" class="form-check-label"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-5">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-7">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="add-employee-banking-details-section">
+                        <div id="add-employee-banking-details-note">
+                            <span>Note: You have selected Cheque in Banking Details, So just click on Next</span>
+                        </div>
+                        <div id="add-employee-banking-details">
+                            <br>
+                            <hr>
+                            <h3>Step - 7 Add Employee Banking Details</h3>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emp-bank-name">Bank Name</label>
+                                        <input type="text" class="form-control" id="emp-bank-name" name="emp-bank-name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emp-branch">Branch</label>
+                                        <input type="text" class="form-control" id="emp-branch" name="emp-branch">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emp-account-number">Account Number</label>
+                                        <input type="Numeric" class="form-control" id="emp-account-number"
+                                            name="emp-account-number">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emp-account-type">Account Type</label>
+                                        <input type="text" class="form-control" id="emp-account-type"
+                                            name="emp-account-type">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-6">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-step-8">Next &gt;</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="" id="previous-employment-earnings-section">
+                        <h3 id="step-count-update">Step - 7 Previous Employment Earnings & Taxes</h3>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success" id="back-to-step-7">&lt; Back</button>
+                                <button type="submit" class="btn btn-success" id="next-to-end">Save</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- Show Employee List -->
+                <div class="show-employee-list"></div>
+            </div>
+        </div>
+    </div>
+    {% endif %}{% endif %}
+    <!-- JavaScript/Jquery -->
+    <script>
+        function loadTaxFreeBenifits() {
+
+            var basic_pay_amount = document.getElementById("basic-pay").value;
+            var innerTable = "";
+
+            if (($("#add-other-benefits-1").val()) != null) {
+                innerTable += '<tr><td>' + $("#add-other-benefits-1").val() + '</td><td>' + $("#add-other-benefits-1-value").val() + '</td><td><div class="form-check"><input type="radio" class="form-check-input" id="taxable-gross-pay-benefits-1" name="taxable-gross-pay-benefits-1" value="Yes">Taxable<label for="taxable-gross-pay" class="form-check-label"></label></div><div class="form-check"><input type="radio" class="form-check-input" id="nontaxable-gross-pay-benefits-1"name="taxable-gross-pay-benefits-1" value="No">Non-Taxable<label for="nontaxable-gross-pay" class="form-check-label"></label></div></td></tr>';
+            }
+
+            if (($("#add-other-benefits-2").val()) != null) {
+                innerTable += '<tr><td>' + $("#add-other-benefits-2").val() + '</td><td>' + $("#add-other-benefits-2-value").val() + '</td><td><div class="form-check"><input type="radio" class="form-check-input" id="taxable-gross-pay-benefits-2" name="taxable-gross-pay-benefits-2" value="Yes">Taxable<label for="taxable-gross-pay" class="form-check-label"></label></div><div class="form-check"><input type="radio" class="form-check-input" id="nontaxable-gross-pay-benefits-2"name="taxable-gross-pay-benefits-2" value="No">Non-Taxable<label for="nontaxable-gross-pay" class="form-check-label"></label></div></td></tr>';
+            }
+
+            if (($("#add-other-benefits-3").val()) != null) {
+                innerTable += '<tr><td>' + $("#add-other-benefits-3").val() + '</td><td>' + $("#add-other-benefits-3-value").val() + '</td><td><div class="form-check"><input type="radio" class="form-check-input" id="taxable-gross-pay-benefits-3" name="taxable-gross-pay-benefits-3" value="Yes">Taxable<label for="taxable-gross-pay" class="form-check-label"></label></div><div class="form-check"><input type="radio" class="form-check-input" id="nontaxable-gross-pay-benefits-3"name="taxable-gross-pay-benefits-3" value="No">Non-Taxable<label for="nontaxable-gross-pay" class="form-check-label"></label></div></td></tr>';
+            }
+
+            var outerTable = '<table class="table table-hover"><thead><tr><th>Earnings Type</th><th>Amount</th><th>Taxable</th></tr></thead><tbody><tr><td>Basic Pay</td><td>' + basic_pay_amount + '</td><td><div class="form-check"><input type="radio" class="form-check-input" id="taxable-gross-pay-baisc-pay"name="taxable-gross-pay-basic-pay" value="Yes">Taxable<label for="taxable-gross-pay-basic-pay" class="form-check-label"></label></div><div class="form-check"><input type="radio" class="form-check-input" id="nontaxable-gross-pay-basic-pay"name="taxable-gross-pay-basic-pay" value="No">Non-Taxable<label for="nontaxable-gross-pay-basic-pay" class="form-check-label"></label></div></td></tr>' + innerTable + '</tbody></table>';
+
+            document.getElementById('tax-pay-benefits-div').innerHTML = outerTable;
+
+            $("#tax-free-benifits-btn").html("Reload Data");
+
+        }
+        $(document).ready(function () {
+            // business section hide/show
+            function hideBusinessSection() {
+                $("#b-business-details-section").hide(150);
+                $("#b-select-payement-frequency-section").hide(150);
+                $("#b-add-start-dates-section").hide(150);
+                $("#b-company-banking-details-section").hide(150);
+            }
+            $("#b-back-to-step-1").click(function () {
+                hideBusinessSection();
+                $("#b-business-details-section").show(150);
+                $("#b-progress-bar").css("width", "0%");
+
+                document.getElementById('b-progress-bar').innerHTML = '0% Complete';
+            });
+            $("#b-next-to-step-2,#b-back-to-step-2").click(function () {
+                hideBusinessSection();
+                $("#b-select-payement-frequency-section").show(150);
+                $("#b-progress-bar").css("width", "25%");
+
+                document.getElementById('b-progress-bar').innerHTML = '25% Complete';
+            });
+            $("#b-next-to-step-3,#b-back-to-step-3").click(function () {
+                hideBusinessSection();
+                $("#b-add-start-dates-section").show(150);
+
+                $("#b-progress-bar").css("width", "50%");
+
+                document.getElementById('b-progress-bar').innerHTML = '50% Complete';
+            });
+            $("#b-next-to-step-4").click(function () {
+                hideBusinessSection();
+                $("#b-company-banking-details-section").show(150);
+                $("#b-progress-bar").css("width", "75%");
+
+                document.getElementById('b-progress-bar').innerHTML = '75% Complete';
+            });
+
+            // employee section hide/show
+            function hideEmployeeSection() {
+                $("#basic-information-section").hide(150);
+                $("#personal-information-section").hide(150);
+                $("#earnings-section").hide(150);
+                $("#tax-free-benefits-section").hide(150);
+                $("#add-salary-deduction-section").hide(150);
+                $("#add-payment-terms-section").hide(150);
+                $("#add-employee-banking-details-section").hide(150);
+                $("#previous-employment-earnings-section").hide(150);
+            }
+            $("#back-to-step-1").click(function () {
+                hideEmployeeSection();
+                $("#basic-information-section").show(150);
+                $("#progress-bar").css("width", "0%");
+
+                document.getElementById('progress-bar').innerHTML = '0% Complete';
+            });
+            $("#next-to-step-2,#back-to-step-2").click(function () {
+                hideEmployeeSection();
+                $("#personal-information-section").show(150);
+                $("#progress-bar").css("width", "12%");
+
+                document.getElementById('progress-bar').innerHTML = '12% Complete';
+            });
+            $("#next-to-step-3,#back-to-step-3").click(function () {
+                hideEmployeeSection();
+                $("#earnings-section").show(150);
+                $("#progress-bar").css("width", "24%");
+
+                document.getElementById('progress-bar').innerHTML = '24% Complete';
+            });
+            $("#next-to-step-4,#back-to-step-4").click(function () {
+                hideEmployeeSection();
+                $("#tax-free-benefits-section").show(150);
+                $("#progress-bar").css("width", "36%");
+                loadTaxFreeBenifits();
+
+                document.getElementById('progress-bar').innerHTML = '36% Complete';
+            });
+            $("#next-to-step-5,#back-to-step-5").click(function () {
+                hideEmployeeSection();
+                $("#add-salary-deduction-section").show(150);
+                $("#progress-bar").css("width", "48%");
+
+                document.getElementById('progress-bar').innerHTML = '48% Complete';
+            });
+            $("#next-to-step-6,#back-to-step-6").click(function () {
+                hideEmployeeSection();
+                $("#add-payment-terms-section").show(150);
+                $("#progress-bar").css("width", "60%");
+
+                document.getElementById('progress-bar').innerHTML = '60% Complete';
+            });
+            $("#next-to-step-7,#back-to-step-7").click(function () {
+                hideEmployeeSection();
+                $("#add-employee-banking-details-section").show(150);
+                $("#progress-bar").css("width", "72%");
+
+                document.getElementById('progress-bar').innerHTML = '72% Complete';
+            });
+            $("#next-to-step-8").click(function () {
+                hideEmployeeSection();
+                $("#previous-employment-earnings-section").show(150);
+                $("#progress-bar").css("width", "84%");
+
+                document.getElementById('progress-bar').innerHTML = '84% Complete';
+            });
+
+            $("#list-of-earning-types").val("");
+
+            $("#basic-pay,#add-other-benefits-1,#add-other-benefits-2,#add-other-benefits-3,#add-other-benefits-1-value,#add-other-benefits-2-value,#add-other-benefits-3-value").change(function () {
+                var basic_pay_value = $("#basic-pay").val();
+                var benefits_1 = $("#add-other-benefits-1-value").val();
+                var benefits_2 = $("#add-other-benefits-2-value").val();
+                var benefits_3 = $("#add-other-benefits-3-value").val();
+
+                if (basic_pay_value == "") {
+                    basic_pay_value = 0;
+                }
+                if (benefits_1 == "") {
+                    benefits_1 = 0;
+                }
+                if (benefits_2 == "") {
+                    benefits_2 = 0;
+                }
+                if (benefits_3 == "") {
+                    benefits_3 = 0;
+                }
+                if (basic_pay_value == "") {
+                    console.log("Hello");
+                }
+
+                console.log(basic_pay_value);
+                $("#total-gross-pay").val(parseInt(basic_pay_value) + parseInt(benefits_1) + parseInt(benefits_2) + parseInt(benefits_3));
+                console.log(parseInt(basic_pay_value) + parseInt(benefits_1) + parseInt(benefits_2) + parseInt(benefits_3));
+            });
+
+            $("#monthly").click(function () {
+                $("#pay-frequency1").html('<td id="pay-frequency1">Active</td>');
+                $("#pay-frequency2").html('<td id="pay-frequency2">Inactive</td>');
+                $("#pay-frequency3").html('<td id="pay-frequency3">Inactive</td>');
+                $("#pay-frequency4").html('<td id="pay-frequency4">Inactive</td>');
+
+                $("#selected-pay-frequency").html('<td id="selected-pay-frequency">Monthly</td>');
+                $("#selected-period-number").html('<td id="selected-period-number">12</td>');
+
+            });
+
+            $("#fortnightly").click(function () {
+                $("#pay-frequency1").html('<td id="pay-frequency1">Inactive</td>');
+                $("#pay-frequency2").html('<td id="pay-frequency2">Active</td>');
+                $("#pay-frequency3").html('<td id="pay-frequency3">Inactive</td>');
+                $("#pay-frequency4").html('<td id="pay-frequency4">Inactive</td>');
+
+                $("#selected-pay-frequency").html('<td id="selected-pay-frequency">Fortnightly</td>');
+                $("#selected-period-number").html('<td id="selected-period-number">26</td>');
+            });
+
+            $("#bi-weekly").click(function () {
+                $("#pay-frequency1").html('<td id="pay-frequency1">Inactive</td>');
+                $("#pay-frequency2").html('<td id="pay-frequency2">Inactive</td>');
+                $("#pay-frequency3").html('<td id="pay-frequency3">Active</td>');
+                $("#pay-frequency4").html('<td id="pay-frequency4">Inactive</td>');
+
+                $("#selected-pay-frequency").html('<td id="selected-pay-frequency">Bi-Weekly</td>');
+                $("#selected-period-number").html('<td id="selected-period-number">24</td>');
+            });
+
+            $("#weekly").click(function () {
+                $("#pay-frequency1").html('<td id="pay-frequency1">Inactive</td>');
+                $("#pay-frequency2").html('<td id="pay-frequency2">Inactive</td>');
+                $("#pay-frequency3").html('<td id="pay-frequency3">Inactive</td>');
+                $("#pay-frequency4").html('<td id="pay-frequency4">Active</td>');
+
+                $("#selected-pay-frequency").html('<td id="selected-pay-frequency">Weekly</td>');
+                $("#selected-period-number").html('<td id="selected-period-number">52</td>');
+            });
+            function hide() {
+                $(".profile").hide(150);
+                $(".create-business").hide(150);
+                $(".create-employee").hide(150);
+                $(".show-business-list").hide(150);
+                $(".show-employee-list").hide(150);
+            }
+            $("#d-profile").click(function () {
+                hide();
+                $(".profile").show(150);
+            });
+            $("#d-create-business").click(function () {
+                hide();
+                $(".create-business").show(150);
+            });
+            $("#d-show-business-list").click(function () {
+                hide();
+                $(".show-business-list").show(150);
+            });
+            $("#d-create-employee").click(function () {
+                hide();
+                $(".create-employee").show(150);
+            });
+            $("#d-show-employee-list").click(function () {
+                hide();
+                $(".show-employee-list").show(150);
+            });
+
+            $("#direct-deposit").click(function () {
+                $("#add-employee-banking-details").show(150);
+                $("#add-employee-banking-details-note").hide();
+                $("#step-count-update").html('<h3 id="step-count-update">Step - 8 Previous Employment Earnings & Taxes</h3>');
+            });
+
+            $("#cheque").click(function () {
+                $("#add-employee-banking-details").hide(150);
+                $("#add-employee-banking-details-note").show();
+                $("#step-count-update").html('<h3 id="step-count-update">Step - 7 Previous Employment Earnings & Taxes</h3>');
+
+            });
+
+            $("#add-earning-type").click(function () {
+                console.log("hello");
+                console.log($("#earnings-type-div").html());
+            });
+        });
+    </script>
+</body>
+
+</html>
