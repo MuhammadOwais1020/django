@@ -1,5 +1,14 @@
+table(users)
+id PK
+first_name
+last_name
+email
+mobile_number
+password
+account_type
+------------------------
 table(businesses)
-business_id
+id PK
 street_1
 street_2
 city
@@ -11,6 +20,83 @@ national_insurance_scheme
 business_start_date
 ---------------------------
 table(pay_frequency_table)
+id PK
+id (business) FK
 pay_frequency
 number_of_periods
 status
+--------------------------
+table(pay_period)
+id PK
+id (business) FK
+id (pay_frequency) Fk
+pay_frequency
+start_date
+end_date
+period_number
+--------------------------
+table(company_banking_details)
+id PK
+id (business) Fk
+account_name
+bank_name
+branch
+account_number
+account_type
+---------------------------
+table(employees)
+id PK
+first_name
+last_name
+job_title
+department
+start_date
+work_address
+date_of_birth
+TRN
+NIS
+contact_number
+personal_email_address
+next_of_kin
+contact_number_of_next_of_kin
+address_line_1
+address_line_2
+city_town
+postal_code
+parish
+country
+------------------------
+table(earnings_type)
+id PK
+earning_type
+------------------------
+table(earnings)
+id PK
+id (employee) FK
+earning_type
+PTD_amount
+taxable
+pay_frequency
+effective_date
+status
+-------------------------
+table(deduction)
+id PK
+id (employee) FK
+deduction_type
+amount
+effective_date
+status
+------------------------
+table(paymentTerm)
+id PK
+id (employee) FK
+payment_term
+------------------------
+table(employee_banking_details)
+id PK
+id (employee) FK
+bank_name
+branch
+account_number
+account_type
