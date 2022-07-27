@@ -1,0 +1,16 @@
+table(businesses)
+business_id
+street_1
+street_2
+city
+postal_code
+parish
+country
+tax_registration_number
+national_insurance_scheme
+business_start_date
+---------------------------
+table(pay_frequency_table)
+pay_frequency
+number_of_periods
+status
