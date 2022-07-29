@@ -1,4 +1,5 @@
 import email
+from django.http import HttpResponse
 from django.shortcuts import render
 from payroll_app.models import users
 from payroll_app.models import earnings_type
@@ -116,3 +117,12 @@ def userLogin(request):
 # Logout Account
 def logout(request):
     return render(request, "index.html")
+
+# create business
+def createBusiness(request):
+    print('function k ander')
+    data = {
+        "login": "success",
+        "account_type": "Business"
+    }
+    return render(request, 'index.html', data)

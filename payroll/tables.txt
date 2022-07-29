@@ -100,3 +100,9 @@ bank_name
 branch
 account_number
 account_type
+---------------------------
+table(payroll)
+id PK
+id (business) FK
+id (pay_period) FK
+status

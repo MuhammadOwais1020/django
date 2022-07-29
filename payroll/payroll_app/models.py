@@ -22,6 +22,7 @@ class businesses(models.Model):
     tax_registration_number = models.CharField(max_length=50)
     national_insurnce_scheme = models.CharField(max_length=50)
     business_start_date = models.DateField()
+    manager_name = models.CharField(max_length=50)
 
 # pay_frequency
 class pay_frequency(models.Model):
@@ -69,6 +70,8 @@ class employee(models.Model):
     postal_code = models.IntegerField()
     parish = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
+    manager_name = models.CharField(max_length=50)
+    under_business = models.CharField(max_length=50)
 
 # earning type
 class earnings_type(models.Model):
