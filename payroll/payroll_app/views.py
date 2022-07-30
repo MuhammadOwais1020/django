@@ -89,6 +89,9 @@ def userLogin(request):
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
+        username = request.POST.get('username')
+    
+    print(username)
 
     record = users.objects.filter(email=email,password=password)
     # access earning types from database
@@ -149,7 +152,8 @@ def adminLogout(request):
 def createBusiness(request):
     if request.method == "POST":
         # dashboard information
-        name = request.POST.get('name')
+        first_name = request.POST.get('first-name')
+        last_name = request.POST.get('last-name')
         email = request.POST.get('email')
         mobile_number = request.POST.get('mobile-number')
         account_type = request.POST.get('account-type')
@@ -159,7 +163,8 @@ def createBusiness(request):
         "login": "success",
         "account_type": "Business",
         "email": email,
-        "name": name,
+        "first_name": first_name,
+        "last_name":last_name,
         "mobile_number": mobile_number,
         "account_type": account_type
     }
