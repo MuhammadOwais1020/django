@@ -2,9 +2,10 @@ import email
 from xml.dom.minidom import NamedNodeMap
 from django.http import HttpResponse
 from django.shortcuts import render
+from payroll_app.models import pay_frequency
 from payroll_app.models import users
 from payroll_app.models import earnings_type
-from payroll_app.models import payroll
+from payroll_app.models import pay_period
 from payroll_app.models import businesses
 
 # Create your views here.
@@ -126,6 +127,19 @@ def userLogin(request):
 
         if business != "":
             business = "y"
+    
+    pay_period_record_monthly = ""
+    pay_period_record_fortnightly = ""
+    pay_period_record_bi_weekly = ""
+    pay_period_record_weekly = ""
+    pay_period_record_hourly = ""
+
+    pay_period_record_monthly = pay_period.objects.filter(pay_frequency = "Monthly")
+    pay_period_record_fortnightly = pay_period.objects.filter(pay_frequency = "Fortnightly")
+    pay_period_record_bi_weekly = pay_period.objects.filter(pay_frequency = "Bi-Weekly")
+    pay_period_record_weekly = pay_period.objects.filter(pay_frequency = "Weekly")
+    pay_period_record_hourly = pay_period.objects.filter(pay_frequency = "Hourly")
+
 
     data={
         "login" : login,
@@ -135,7 +149,12 @@ def userLogin(request):
         "mobile_number":mobile_number,
         "account_type":account_type,
         "earning_type":earnings_type_lst,
-        "b_id": business
+        "b_id": business,
+        "pay_period_record_monthly":  pay_period_record_monthly,
+        "pay_period_record_fortnightly":  pay_period_record_fortnightly,
+        "pay_period_record_bi_weekly":  pay_period_record_bi_weekly,
+        "pay_period_record_weekly":  pay_period_record_weekly,
+        "pay_period_record_hourly":  pay_period_record_hourly
     }
 
     return render(request, "index.html", data)
@@ -184,7 +203,7 @@ def createPayPeriod(request):
         period_number = request.POST.get('period-number')
 
         # record save into database
-        en = payroll(pay_frequency = pay_frequency, start_date = start_date, end_date = end_date, period_number = period_number)
+        en = pay_period(pay_frequency = pay_frequency, start_date = start_date, end_date = end_date, period_number = period_number)
 
     
         try:
@@ -193,7 +212,7 @@ def createPayPeriod(request):
         except:
             save = "error"
 
-    pay_period_record = payroll.objects.all()
+    pay_period_record = pay_period.objects.all()
 
     data = {
         "save": save,

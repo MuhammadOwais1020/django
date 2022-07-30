@@ -403,6 +403,8 @@
                             <input type="hidden" name="email" value="{{email}}">
                             <input type="hidden" name="mobile-number" value="{{mobile_number}}">
                             <input type="hidden" name="account-type" value="{{account_type}}">
+
+
                             <div class="row">
                                 <div class="col-sm-12">
                                     <span class="btn btn-success" id="b-back-to-step-3">&lt; Back</span>
@@ -411,6 +413,7 @@
                             </div>
                         </form>
                     </section>
+
                 </div>
                 <!-- Show Business List -->
                 <div class="show-business-list"></div>
@@ -1547,17 +1550,16 @@
                 var start_date_tables = "";
 
                 if ((document.getElementById('monthly')).checked) {
-                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="monthly-selected-pay-frequency">Monthly</td></tr><tr><td>Start Date</td><td><div class="form-group"><input type="date" name="monthly-pay-start-date" class="form-control"></div></td></tr><tr><td>End Date</td><td><div class="form-group"><input type="date" name="monthly-pay-end-date" class="form-control"></div></td></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="monthly-period-number"></div></td></tr></tbody></table><br><hr>';
-                    console.log("hello");
+                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="monthly-selected-pay-frequency">Monthly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="monthly-pay-start-date" id="monthly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_monthly %}<option value="{{a.start_date}} : {{a.end_date}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="monthly-period-number"></div></td></tr></tbody></table><br><hr>';
                 }
                 if ((document.getElementById('fortnightly')).checked) {
-                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="fortnightly-selected-pay-frequency">Fortnightly</td></tr><tr><td>Start Date</td><td><div class="form-group"><input type="date" name="fortnightly-pay-start-date" class="form-control"></div></td></tr><tr><td>End Date</td><td><div class="form-group"><input type="date" name="fortnightly-pay-end-date" class="form-control"></div></td></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="fortnightly-period-number"></div></td></tr></tbody></table><br><hr>';
+                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="fortnightly-selected-pay-frequency">Fortnightly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="fortnightly-pay-start-date" id="fortnightly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_fortnightly %}<option value="{{a.start_date}} : {{a.end_date}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="fortnightly-period-number"></div></td></tr></tbody></table><br><hr>';
                 }
                 if ((document.getElementById('bi-weekly')).checked) {
-                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="bi-weekly-selected-pay-frequency">Bi-Weekly</td></tr><tr><td>Start Date</td><td><div class="form-group"><input type="date" name="bi-weekly-pay-start-date" class="form-control"></div></td></tr><tr><td>End Date</td><td><div class="form-group"><input type="date" name="bi-weekly-pay-end-date" class="form-control"></div></td></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="bi-weekly-period-number"></div></td></tr></tbody></table><br><hr>';
+                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="bi-weekly-selected-pay-frequency">Bi-Weekly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="bi-weekly-pay-start-date" id="bi-weekly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_bi_weekly %}<option value="{{a.start_date}} : {{a.end_date}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="bi-weekly-period-number"></div></td></tr></tbody></table><br><hr>';
                 }
                 if ((document.getElementById('weekly')).checked) {
-                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="weekly-selected-pay-frequency">Weekly</td></tr><tr><td>Start Date</td><td><div class="form-group"><input type="date" name="weekly-pay-start-date" class="form-control"></div></td></tr><tr><td>End Date</td><td><div class="form-group"><input type="date" name="weekly-pay-end-date" class="form-control"></div></td></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="weekly-period-number"></div></td></tr></tbody></table><br><hr>';
+                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="weekly-selected-pay-frequency">Weekly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="weekly-pay-start-date" id="weekly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_weekly %}<option value="{{a.start_date}} : {{a.end_date}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="weekly-period-number"></div></td></tr></tbody></table><br><hr>';
                 }
 
                 document.getElementById('start-date-tables').innerHTML = start_date_tables;
