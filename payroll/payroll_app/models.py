@@ -84,7 +84,8 @@ class earnings(models.Model):
     PTD_amount = models.IntegerField()
     taxable = models.CharField(max_length=50)
     pay_frequency = models.CharField(max_length=50)
-    effective_date = models.DateField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     status = models.CharField(max_length=50)
 
 # deduction
@@ -92,7 +93,8 @@ class deduction(models.Model):
     employee_id = models.IntegerField()
     deduction_type = models.CharField(max_length=50)
     amount = models.IntegerField()
-    effective_date = models.DateField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     status = models.CharField(max_length=50)
 
 # paymentTerm
@@ -107,3 +109,9 @@ class employee_banking_details(models.Model):
     branch = models.CharField(max_length=50)
     account_number = models.IntegerField()
     account_type = models.CharField(max_length=50)
+
+# payroll
+class payroll(models.Model):
+    business_id = models.IntegerField()
+    pay_period_id = models.IntegerField()
+    status = models.CharField(max_length=30)

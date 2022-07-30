@@ -77,7 +77,8 @@ earning_type
 PTD_amount
 taxable
 pay_frequency
-effective_date
+start_date
+end_date
 status
 -------------------------
 table(deduction)
@@ -85,7 +86,8 @@ id PK
 id (employee) FK
 deduction_type
 amount
-effective_date
+start_date
+end_date
 status
 ------------------------
 table(paymentTerm)
