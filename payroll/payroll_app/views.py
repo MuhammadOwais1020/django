@@ -102,6 +102,7 @@ def userLogin(request):
     login = ""
     id = 0
     is_business = ""
+    business = "n"
 
     for a in record:
         id = a.id
@@ -113,18 +114,15 @@ def userLogin(request):
 
     if first_name == "":
         login = 'error'
-        print(login)
     else:
         login = "success"
-        print(login)
+
         is_business = businesses.objects.filter(user_id = id)
-        
-    
-    
-    b_id = "Arslan"
-    
-    for b in is_business:
-        b_id = b.id
+        for b in is_business:
+            business = b.id
+
+        if business != "":
+            business = "y"
 
     data={
         "login" : login,
@@ -134,8 +132,7 @@ def userLogin(request):
         "mobile_number":mobile_number,
         "account_type":account_type,
         "earning_type":earnings_type_lst,
-        "b_id": b_id,
-        "id":id
+        "b_id": business
     }
 
     return render(request, "index.html", data)

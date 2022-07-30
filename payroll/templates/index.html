@@ -142,7 +142,6 @@
     </div>
     <!-- Business User Dashboard -->
     <div class="continer-fluid">
-        <h1>{{b_id}}</h1>
         <div class="row">
             <!-- Side Bar -->
             <div class="col-sm-2 bg-info side-bar">
@@ -152,6 +151,7 @@
                 <div>
                     <button class="btn" id="d-create-business">Add Business</button>
                 </div>
+                {% if business == "y" %}
                 <div>
                     <button class="btn" id="d-show-business-list">Show Business List</button>
                 </div>
@@ -161,6 +161,7 @@
                 <div>
                     <button class="btn" id="d-show-employee-list">Show Employees List</button>
                 </div>
+                {% endif %}
                 <div>
                     <form method="post" action="{%url 'logout'%}" role="form">
                         {% csrf_token %} {{form}}
@@ -857,6 +858,7 @@
                 <div>
                     <button class="btn" id="d-create-business">Create Business</button>
                 </div>
+                {% if business == "y" %}
                 <div>
                     <button class="btn" id="d-show-business-list">Show Business List</button>
                 </div>
@@ -866,6 +868,7 @@
                 <div>
                     <button class="btn" id="d-show-employee-list">Show Employees List</button>
                 </div>
+                {% endif %}
                 <div>
                     <form method="post" action="{%url 'logout'%}" role="form">
                         {% csrf_token %} {{form}}
