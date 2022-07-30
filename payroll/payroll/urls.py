@@ -26,5 +26,7 @@ urlpatterns = [
     path('allUsers', pApp.allUsers, name="allUsers"),
     path('userLogin', pApp.userLogin, name="userLogin"),
     path('logout', pApp.logout, name="logout"),
-    path('createBusiness', pApp.createBusiness, name='createBusiness')
+    path('createBusiness', pApp.createBusiness, name='createBusiness'),
+    path('payPeriod', pApp.payPeriod, name="payPeriod"),
+    path('createPayPeriod', pApp.createPayPeriod, name="createPayPeriod")
 ]

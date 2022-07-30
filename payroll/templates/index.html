@@ -398,6 +398,10 @@
                         <br>
                         <form method="post" action="{%url 'createBusiness'%}" role="form">
                             {% csrf_token %} {{form}}
+                            <input type="hidden" name="name" value="{{first_name}} {{last_name}}">
+                            <input type="hidden" name="email" value="{{email}}">
+                            <input type="hidden" name="mobile-number" value="{{mobile_number}}">
+                            <input type="hidden" name="account-type" value="{{account_type}}">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <span class="btn btn-success" id="b-back-to-step-3">&lt; Back</span>

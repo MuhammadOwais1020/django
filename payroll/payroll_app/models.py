@@ -33,8 +33,6 @@ class pay_frequency(models.Model):
 
 # pay_period
 class pay_period(models.Model):
-    business_id = models.IntegerField()
-    pay_frequency_id = models.IntegerField()
     pay_frequency = models.CharField(max_length=50)
     start_date = models.DateField()
     end_date = models.DateField()

@@ -1,8 +1,10 @@
 import email
+from xml.dom.minidom import NamedNodeMap
 from django.http import HttpResponse
 from django.shortcuts import render
 from payroll_app.models import users
 from payroll_app.models import earnings_type
+from payroll_app.models import payroll
 
 # Create your views here.
 
@@ -47,16 +49,16 @@ def createUser(request):
         password = request.POST.get('password')
         account_type = request.POST.get('account-type')
     
-    en = users(first_name=first_name,last_name=last_name,email=email,mobile_number=mobile_number,password=password,account_type=account_type)
+        en = users(first_name=first_name,last_name=last_name,email=email,mobile_number=mobile_number,password=password,account_type=account_type)
     
-    print(en)
-    save = ""
+        print(en)
+        save = ""
     
-    try:
-        en.save()
-        save = "success"
-    except:
-        save = "error"
+        try:
+            en.save()
+            save = "success"
+        except:
+            save = "error"
 
     data = {
         "save": save,
@@ -120,9 +122,52 @@ def logout(request):
 
 # create business
 def createBusiness(request):
-    print('function k ander')
+    if request.method == "POST":
+        # dashboard information
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        mobile_number = request.POST.get('mobile-number')
+        account_type = request.POST.get('account-type')
+        # business information
+
     data = {
         "login": "success",
-        "account_type": "Business"
+        "account_type": "Business",
+        "email": email,
+        "name": name,
+        "mobile_number": mobile_number,
+        "account_type": account_type
     }
     return render(request, 'index.html', data)
+
+# pay period 
+def payPeriod(request):
+    return render(request, "pay-period.html")
+
+# create Pay Period
+def createPayPeriod(request):
+    save = ""
+    if request.method == "POST":
+        pay_frequency = request.POST.get('frequency')
+        start_date = request.POST.get('start-date')
+        end_date = request.POST.get('end-date')
+        period_number = request.POST.get('period-number')
+
+        # record save into database
+        en = payroll(pay_frequency = pay_frequency, start_date = start_date, end_date = end_date, period_number = period_number)
+
+    
+        try:
+            en.save()
+            save = "success"
+        except:
+            save = "error"
+
+    pay_period_record = payroll.objects.all()
+
+    data = {
+        "save": save,
+        "pay_period_record": pay_period_record
+    }
+
+    return render(request, "pay-period.html", data)
