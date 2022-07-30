@@ -19,6 +19,10 @@
             padding: 0;
         }
 
+        #width-100 {
+            width: 100%;
+        }
+
         .header {
             height: 7vh;
             text-align: center;
@@ -68,6 +72,67 @@
 
 <body>
     <!-- header -->
+
+    {% if login != 'success'%}
+    <nav class="navbar navbar-expand-sm navbar-dark bg-info">
+        <div class="container">
+            <a class="navbar-brand" href="javascript:void(0)">Payroll</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{%url 'home'%}">User Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{%url 'admin_f'%}">Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <!-- UserLogin -->
+    <div class="container">
+        <form method="post" action="{%url 'userLogin'%}" role="form">
+            {% csrf_token %} {{form}}
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <h2>User Sign In</h2>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" />
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-success" id="width-100">
+                        Log In
+                    </button>
+                    <br />
+                    <br />{% if login == 'error' %}
+                    <div class="form-group">
+                        <div class="alert alert-danger" id="alert-message">
+                            <strong>Error!</strong> Invalid Username and Password.
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-sm-4">
+                    <h1>{{first_name}}</h1>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    <!-- if login successfull -->
+    {% if login == 'success'%}
+    <!-- check account type is Business-->
+    {% if account_type == "Business"%}
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 bg-info header">
@@ -75,48 +140,9 @@
             </div>
         </div>
     </div>
-    {% if login != 'success'%}
-    <br>
-    <!-- UserLogin -->
-    <form method="post" action="{%url 'userLogin'%}" role="form">
-        {% csrf_token %} {{form}}
-        <div class="row">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                <h2>User Sign In</h2>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" />
-                </div>
-                <br />
-                <button type="submit" class="btn btn-success" id="width-100">
-                    Log In
-                </button>
-                <br />
-                <br />{% if login == 'error' %}
-                <div class="form-group">
-                    <div class="alert alert-danger" id="alert-message">
-                        <strong>Error!</strong> Invalid Username and Password.
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-            <div class="col-sm-4">
-                <h1>{{first_name}}</h1>
-            </div>
-        </div>
-    </form>
-    {% endif %}
-    <!-- if login successfull -->
-    {% if login == 'success'%}
-    <!-- check account type is Business-->
-    {% if account_type == "Business"%}
     <!-- Business User Dashboard -->
     <div class="continer-fluid">
+        <h1>{{b_id}}</h1>
         <div class="row">
             <!-- Side Bar -->
             <div class="col-sm-2 bg-info side-bar">
@@ -813,6 +839,13 @@
     {% endif %}
     <!-- check account type is Accounting -->
     {% if account_type == "Accounting"%}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 bg-info header">
+                <h2>Payroll App</h2>
+            </div>
+        </div>
+    </div>
     <!-- Accounting User Dashboard -->
     <div class="continer-fluid">
         <div class="row">

@@ -13,6 +13,7 @@ class users(models.Model):
 
 # businesses
 class businesses(models.Model):
+    business_name = models.CharField(max_length=50)
     street_1 = models.CharField(max_length=50)
     street2 = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
@@ -22,11 +23,10 @@ class businesses(models.Model):
     tax_registration_number = models.CharField(max_length=50)
     national_insurnce_scheme = models.CharField(max_length=50)
     business_start_date = models.DateField()
-    manager_name = models.CharField(max_length=50)
+    user_id = models.IntegerField()
 
 # pay_frequency
 class pay_frequency(models.Model):
-    business_id = models.IntegerField()
     pay_frequency = models.CharField(max_length=50)
     number_of_periods = models.IntegerField()
     status = models.CharField(max_length=50)
@@ -37,6 +37,13 @@ class pay_period(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     period_number = models.IntegerField()
+
+# payroll
+class payroll(models.Model):
+    business_id = models.IntegerField()
+    pay_period_id = models.IntegerField()
+    status = models.CharField(max_length=30)
+
 
 # company banking details
 class company_banking_details(models.Model):
@@ -68,8 +75,8 @@ class employee(models.Model):
     postal_code = models.IntegerField()
     parish = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
-    manager_name = models.CharField(max_length=50)
-    under_business = models.CharField(max_length=50)
+    user_id = models.IntegerField(max_length=50)
+    business_id = models.IntegerField(max_length=50)
 
 # earning type
 class earnings_type(models.Model):
@@ -107,9 +114,3 @@ class employee_banking_details(models.Model):
     branch = models.CharField(max_length=50)
     account_number = models.IntegerField()
     account_type = models.CharField(max_length=50)
-
-# payroll
-class payroll(models.Model):
-    business_id = models.IntegerField()
-    pay_period_id = models.IntegerField()
-    status = models.CharField(max_length=30)

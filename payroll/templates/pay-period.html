@@ -25,7 +25,7 @@
         });
     </script>
     <!-- NAV bar -->
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-info">
         <div class="container">
             <a class="navbar-brand" href="javascript:void(0)">Payroll</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
@@ -41,6 +41,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="{%url 'payPeriod'%}">Pay Period</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{%url 'adminLogout'%}">Log Out</a>
                     </li>
                 </ul>
             </div>

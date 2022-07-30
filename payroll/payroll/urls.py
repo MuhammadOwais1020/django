@@ -20,12 +20,15 @@ from payroll_app import views as pApp
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", pApp.home, name="home"),
+    path("home", pApp.home, name="home"),
     path("admin", pApp.admin, name="admin"),
+    path("admin_f", pApp.admin_f, name="admin_f"),
     path('adminLogin', pApp.adminLogin, name="adminLogin"),
     path('createUser', pApp.createUser, name="createUser"),
     path('allUsers', pApp.allUsers, name="allUsers"),
     path('userLogin', pApp.userLogin, name="userLogin"),
     path('logout', pApp.logout, name="logout"),
+    path('adminLogout', pApp.adminLogout, name="adminLogout"),
     path('createBusiness', pApp.createBusiness, name='createBusiness'),
     path('payPeriod', pApp.payPeriod, name="payPeriod"),
     path('createPayPeriod', pApp.createPayPeriod, name="createPayPeriod")

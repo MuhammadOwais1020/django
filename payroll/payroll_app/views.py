@@ -5,11 +5,20 @@ from django.shortcuts import render
 from payroll_app.models import users
 from payroll_app.models import earnings_type
 from payroll_app.models import payroll
+from payroll_app.models import businesses
 
 # Create your views here.
 
 # admin
 def admin(request):
+    login = "success"
+    data = {
+        "login" : login
+    }
+    return render(request, "admin.html", data)
+
+
+def admin_f(request):
     return render(request, "admin.html")
 
 # index
@@ -91,8 +100,11 @@ def userLogin(request):
     mobile_number = ""
     account_type = ""
     login = ""
+    id = 0
+    is_business = ""
 
     for a in record:
+        id = a.id
         first_name = a.first_name
         last_name = a.last_name
         email = a.email
@@ -101,8 +113,18 @@ def userLogin(request):
 
     if first_name == "":
         login = 'error'
+        print(login)
     else:
         login = "success"
+        print(login)
+        is_business = businesses.objects.filter(user_id = id)
+        
+    
+    
+    b_id = "Arslan"
+    
+    for b in is_business:
+        b_id = b.id
 
     data={
         "login" : login,
@@ -111,7 +133,9 @@ def userLogin(request):
         "email":email,
         "mobile_number":mobile_number,
         "account_type":account_type,
-        "earning_type":earnings_type_lst
+        "earning_type":earnings_type_lst,
+        "b_id": b_id,
+        "id":id
     }
 
     return render(request, "index.html", data)
@@ -119,6 +143,10 @@ def userLogin(request):
 # Logout Account
 def logout(request):
     return render(request, "index.html")
+
+# admin Logout
+def adminLogout(request):
+    return render(request, "admin.html")
 
 # create business
 def createBusiness(request):
