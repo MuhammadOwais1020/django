@@ -2,11 +2,14 @@ import email
 from xml.dom.minidom import NamedNodeMap
 from django.http import HttpResponse
 from django.shortcuts import render
+from payroll.payroll_app.models import payroll
 from payroll_app.models import pay_frequency
 from payroll_app.models import users
 from payroll_app.models import earnings_type
 from payroll_app.models import pay_period
 from payroll_app.models import businesses
+from payroll_app.models import company_banking_details
+from payroll_app.models import payroll
 
 # Create your views here.
 
@@ -143,6 +146,7 @@ def userLogin(request):
 
     data={
         "login" : login,
+        "id":id,
         "first_name" : first_name,
         "last_name": last_name,
         "email":email,
@@ -177,6 +181,90 @@ def createBusiness(request):
         mobile_number = request.POST.get('mobile-number')
         account_type = request.POST.get('account-type')
         # business information
+        business_name = request.POST.get('business-name')
+        street_1 = request.POST.get('stree1')
+        street_2 = request.POST.get('street2')
+        city_town = request.POST.get('city-town')
+        postal_code = request.POST.get('postal-code')
+        parish = request.POST.get('parish')
+        country = request.POST.get('country')
+        trn = request.POST.get('TRN')
+        nis = request.POST.get('NIS')
+        business_start_date = request.POST.get('business-start-date')
+        user_id = request.POST.get('user-id')
+        # pay frequency
+        pay_frequency_check_box_monthly = request.POST.get('pay-frequency-check-box-monthly')
+        pay_frequency_check_box_fortnightly = request.POST.get('pay-frequency-check-box-fortnightly')
+        pay_frequency_check_box_bi_weekly = request.POST.get('pay-frequency-check-box-bi-weekly')
+        pay_frequency_check_box_weekly = request.POST.get('pay-frequency-check-box-weekly')
+        
+        pay_frequency_check_box_lst = []
+
+        if pay_frequency_check_box_monthly != "":
+            pay_frequency_check_box_lst.append(pay_frequency_check_box_monthly)
+
+        if pay_frequency_check_box_fortnightly != "":
+            pay_frequency_check_box_lst.append(pay_frequency_check_box_fortnightly)
+
+        if pay_frequency_check_box_bi_weekly != "":
+            pay_frequency_check_box_lst.append(pay_frequency_check_box_bi_weekly)
+
+        if pay_frequency_check_box_weekly != "":
+            pay_frequency_check_box_lst.append(pay_frequency_check_box_weekly)
+        
+        # pay period data will store in payroll table just pay period id and business id
+        pay_period_id_monthtly = request.POST.get('monthly-pay-start-date')
+        pay_period_fortnightly = request.POST.get('fortnightly-pay-start-date')
+        pay_period_id_bi_weekly = request.POST.get('bi-weekly-pay-start-date')
+        pay_period_id_weekly = request.POST.get('weekly-pay-start-date')
+        
+        pay_period_id_lst = []
+        
+        if pay_period_id_monthtly != "":
+            pay_period_id_lst.append(pay_period_id_monthtly)
+        
+        if pay_period_fortnightly != "":
+            pay_period_id_lst.append(pay_period_fortnightly)
+
+        if pay_period_id_bi_weekly != "":
+            pay_period_id_lst.append(pay_period_id_bi_weekly)
+
+        if pay_period_id_weekly != "":
+            pay_period_id_lst.append(pay_period_id_weekly)
+        
+        # company banking details
+        account_name = request.POST.get('account-name')
+        account_number = request.POST.get('account-number')
+        bank_name = request.POST.get('bank-name')
+        branch_name = request.POST.get('branch_name')
+        account_type = request.POST.get('account-type')
+
+        # insert data into business table 
+        bd = businesses(business_name=business_name, street_1=street_1, street2=street_2, city=city_town, postal_code=postal_code, parish=parish, country=country, tax_registration_number=trn, national_insurnce_scheme=nis, business_start_date=business_start_date, user_id=user_id)
+        bd.save()
+        
+        # fetch last business id
+        business_id = ""
+        business_records = businesses.objects.raw('SELECT * FROM payroll_app_businesses ORDER BY id DESC LIMIT 1')
+        for a in business_records:
+            business_id = a.id
+
+        # insert data into company banking details
+        cbd =  company_banking_details(business_id=business_id, account_name=account_name, bank_name=bank_name, branch=branch_name, account_number=account_number, account_type=account_type)
+        cbd.save()
+
+        # insert data into payroll table
+        for payperiodid in pay_period_id_lst:
+            prd = payroll(business_id=business_id, pay_period_id=payperiodid, status="Active")
+            prd.save()
+        
+        # insert data into pay_frequency table
+        f_p_s = []
+        # f_p_s == frequency_period_status
+        for payfrequencycheckbox in pay_frequency_check_box_lst:
+            f_p_s = payfrequencycheckbox.split(':')
+            pf = pay_frequency(pay_frequency=f_p_s[0], number_of_periods=f_p_s[1], status=f_p_s[2])
+            pf.save()
 
     data = {
         "login": "success",
@@ -191,7 +279,13 @@ def createBusiness(request):
 
 # pay period 
 def payPeriod(request):
-    return render(request, "pay-period.html")
+    # fetch all pay period records
+    pay_period_record = pay_period.objects.all()
+
+    data = {
+        "pay_period_record": pay_period_record
+    }
+    return render(request, "pay-period.html", data)
 
 # create Pay Period
 def createPayPeriod(request):
@@ -213,7 +307,7 @@ def createPayPeriod(request):
             save = "error"
 
     pay_period_record = pay_period.objects.all()
-
+    
     data = {
         "save": save,
         "pay_period_record": pay_period_record

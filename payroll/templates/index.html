@@ -195,209 +195,221 @@
 
                 <!-- Create Business -->
                 <div class="create-business">
-                    <h1>Create Business</h1>
-                    <span>Progress Bar</span>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
-                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%"
-                            id="b-progress-bar">
-                            0% Complete
+                    <form method="post" action="{%url 'createBusiness'%}" role="form">
+                        {% csrf_token %} {{form}}
+                        <h1>Create Business</h1>
+                        <span>Progress Bar</span>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%"
+                                id="b-progress-bar">
+                                0% Complete
+                            </div>
                         </div>
-                    </div>
 
-                    <section id="b-business-details-section">
-                        <h3>Step - 1 Business Details</h3>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="business-name">Business Name</label>
-                                    <input type="text" class="form-control" id="business-name" name="business-name" />
+                        <section id="b-business-details-section">
+                            <h3>Step - 1 Business Details</h3>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="business-name">Business Name</label>
+                                        <input type="text" class="form-control" id="business-name"
+                                            name="business-name" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="street1">Street 1</label>
-                                    <input type="text" class="form-control" name="street1" id="street1" />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="street1">Street 1</label>
+                                        <input type="text" class="form-control" name="street1" id="street1" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="street2">Street 2</label>
+                                        <input type="text" class="form-control" name="street2" id="street2" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="city-town">City Town</label>
+                                        <input type="text" class="form-control" name="city-town" id="city-town" />
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="street2">Street 2</label>
-                                    <input type="text" class="form-control" name="street2" id="street2" />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="postal-code">Postal Code</label>
+                                        <input type="text" class="form-control" name="postal-code" id="postal-code" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="parish">Parish</label>
+                                        <input type="text" class="form-control" name="parish" id="parish" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="country">Country</label>
+                                        <input type="text" class="form-control" name="country" id="country"
+                                            value="Jamaica" />
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="city-town">City Town</label>
-                                    <input type="text" class="form-control" name="city-town" id="city-town" />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="TRN">Tax Registration Number</label>
+                                        <input type="numeric" name="TRN" class="form-control" id="TRN" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="NIS">National Insurance Scheme</label>
+                                        <input type="numeric" name="NIS" class="form-control" id="NIS" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="business-start-date">Business Start Date</label>
+                                        <input type="date" name="business-start-date" class="form-control"
+                                            id="business-start-date" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="postal-code">Postal Code</label>
-                                    <input type="text" class="form-control" name="postal-code" id="postal-code" />
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <span class="btn btn-success" id="b-next-to-step-2">Next &gt;</span>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="parish">Parish</label>
-                                    <input type="text" class="form-control" name="parish" id="parish" />
+                        </section>
+                        <section id="b-select-payement-frequency-section">
+                            <h3>Step - 2 Select Payment Frequency</h3>
+
+                            <input type="hidden" id="pay-frequency-check-box-monthly"
+                                name="pay-frequency-check-box-monthly">
+                            <input type="hidden" id="pay-frequency-check-box-fortnightly"
+                                name="pay-frequency-check-box-fortnightly">
+                            <input type="hidden" id="pay-frequency-check-box-bi-weekly"
+                                name="pay-frequency-check-box-bi-weekly">
+                            <input type="hidden" id="pay-frequency-check-box-weekly"
+                                name="pay-frequency-check-box-weekly">
+
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Pay Frequency</th>
+                                        <th>Number of Periods</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="pay-frequency"
+                                                    id="monthly" />
+                                            </div>
+                                        </td>
+                                        <td>Monthly</td>
+                                        <td>12</td>
+                                        <td id="pay-frequency1">Inactive</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="pay-frequency"
+                                                    id="fortnightly" />
+                                            </div>
+                                        </td>
+                                        <td>Fortnightly</td>
+                                        <td>26</td>
+                                        <td id="pay-frequency2">Inactive</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="pay-frequency"
+                                                    id="bi-weekly" />
+                                            </div>
+                                        </td>
+                                        <td>Bi-weekly</td>
+                                        <td>24</td>
+                                        <td id="pay-frequency3">Inactive</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="pay-frequency"
+                                                    id="weekly" />
+                                            </div>
+                                        </td>
+                                        <td>Weekly</td>
+                                        <td>52</td>
+                                        <td id="pay-frequency4">Inactive</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <span class="btn btn-success" id="b-back-to-step-1">&lt; Back</span>
+                                    <span class="btn btn-success" id="b-next-to-step-3">Next &gt;</span>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="country">Country</label>
-                                    <input type="text" class="form-control" name="country" id="country"
-                                        value="Jamaica" />
+                        </section>
+                        <section id="b-add-start-dates-section">
+                            <h3>Step - 3 Add Start Dates</h3>
+                            <div id="start-date-tables"></div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <span class="btn btn-success" id="b-back-to-step-2">&lt; Back</span>
+                                    <span class="btn btn-success" id="b-next-to-step-4">Next &gt;</span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="TRN">Tax Registration Number</label>
-                                    <input type="numeric" name="TRN" class="form-control" id="TRN" />
+                        </section>
+                        <section id="b-company-banking-details-section">
+                            <h3>Company Banking Details</h3>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="account-name">Name on Account</label>
+                                        <input type="text" class="form-control" name="account-name" id="account-name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="account-number">Account Number</label>
+                                        <input type="numeric" class="form-control" name="account-number"
+                                            id="account-number">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="NIS">National Insurance Scheme</label>
-                                    <input type="numeric" name="NIS" class="form-control" id="NIS" />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group"><label for="bank-name">Bank Name</label>
+                                        <input type="text" class="form-control" id="bank-name" name="bank-name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group"><label for="branch-name">Branch Name</label>
+                                        <input type="text" class="form-control" id="branch-name" name="branch-name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group"><label for="account-type">Account Type</label>
+                                        <input type="text" class="form-control" id="account-type" name="account-type">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="business-start-date">Business Start Date</label>
-                                    <input type="date" name="business-start-date" class="form-control"
-                                        id="business-start-date" />
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <button class="btn btn-success" id="b-next-to-step-2">Next &gt;</button>
-                            </div>
-                        </div>
-                    </section>
-                    <section id="b-select-payement-frequency-section">
-                        <h3>Step - 2 Select Payment Frequency</h3>
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Select</th>
-                                    <th>Pay Frequency</th>
-                                    <th>Number of Periods</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="pay-frequency"
-                                                id="monthly" />
-                                        </div>
-                                    </td>
-                                    <td>Monthly</td>
-                                    <td>12</td>
-                                    <td id="pay-frequency1">Inactive</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="pay-frequency"
-                                                id="fortnightly" />
-                                        </div>
-                                    </td>
-                                    <td>Fortnightly</td>
-                                    <td>26</td>
-                                    <td id="pay-frequency2">Inactive</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="pay-frequency"
-                                                id="bi-weekly" />
-                                        </div>
-                                    </td>
-                                    <td>Bi-weekly</td>
-                                    <td>24</td>
-                                    <td id="pay-frequency3">Inactive</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="pay-frequency"
-                                                id="weekly" />
-                                        </div>
-                                    </td>
-                                    <td>Weekly</td>
-                                    <td>52</td>
-                                    <td id="pay-frequency4">Inactive</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <button class="btn btn-success" id="b-back-to-step-1">&lt; Back</button>
-                                <button class="btn btn-success" id="b-next-to-step-3">Next &gt;</button>
-                            </div>
-                        </div>
-                    </section>
-                    <section id="b-add-start-dates-section">
-                        <h3>Step - 3 Add Start Dates</h3>
-                        <div id="start-date-tables"></div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <button class="btn btn-success" id="b-back-to-step-2">&lt; Back</button>
-                                <button class="btn btn-success" id="b-next-to-step-4">Next &gt;</button>
-                            </div>
-                        </div>
-                    </section>
-                    <section id="b-company-banking-details-section">
-                        <h3>Company Banking Details</h3>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="account-name">Name on Account</label>
-                                    <input type="text" class="form-control" name="account-name" id="account-name">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="account-number">Account Number</label>
-                                    <input type="numeric" class="form-control" name="account-number"
-                                        id="account-number">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group"><label for="bank-name">Bank Name</label>
-                                    <input type="text" class="form-control" id="bank-name" name="bank-name">
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group"><label for="branch-name">Branch Name</label>
-                                    <input type="text" class="form-control" id="branch-name" name="branch-name">
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group"><label for="account-type">Account Type</label>
-                                    <input type="text" class="form-control" id="account-type" name="account-type">
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <form method="post" action="{%url 'createBusiness'%}" role="form">
-                            {% csrf_token %} {{form}}
+                            <br>
+                            <input type="hidden" name="user-id" value="{{id}}">
                             <input type="hidden" name="first-name" value="{{first_name}}">
                             <input type="hidden" name="last-name" value="{{last_name}}">
                             <input type="hidden" name="email" value="{{email}}">
@@ -411,8 +423,8 @@
                                     <button class="btn btn-success" id="b-next-to-end" type="submit">Save</button>
                                 </div>
                             </div>
-                        </form>
-                    </section>
+                        </section>
+                    </form>
 
                 </div>
                 <!-- Show Business List -->
@@ -1550,17 +1562,18 @@
                 var start_date_tables = "";
 
                 if ((document.getElementById('monthly')).checked) {
-                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="monthly-selected-pay-frequency">Monthly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="monthly-pay-start-date" id="monthly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_monthly %}<option value="{{a.start_date}} : {{a.end_date}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="monthly-period-number"></div></td></tr></tbody></table><br><hr>';
+                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="monthly-selected-pay-frequency">Monthly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="monthly-pay-start-date" id="monthly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_monthly %}<option value="{{a.id}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="monthly-period-number"></div></td></tr></tbody></table><br><hr>';
                 }
                 if ((document.getElementById('fortnightly')).checked) {
-                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="fortnightly-selected-pay-frequency">Fortnightly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="fortnightly-pay-start-date" id="fortnightly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_fortnightly %}<option value="{{a.start_date}} : {{a.end_date}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="fortnightly-period-number"></div></td></tr></tbody></table><br><hr>';
+                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="fortnightly-selected-pay-frequency">Fortnightly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="fortnightly-pay-start-date" id="fortnightly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_fortnightly %}<option value="{{a.id}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="fortnightly-period-number"></div></td></tr></tbody></table><br><hr>';
                 }
                 if ((document.getElementById('bi-weekly')).checked) {
-                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="bi-weekly-selected-pay-frequency">Bi-Weekly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="bi-weekly-pay-start-date" id="bi-weekly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_bi_weekly %}<option value="{{a.start_date}} : {{a.end_date}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="bi-weekly-period-number"></div></td></tr></tbody></table><br><hr>';
+                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="bi-weekly-selected-pay-frequency">Bi-Weekly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="bi-weekly-pay-start-date" id="bi-weekly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_bi_weekly %}<option value="{{a.id}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="bi-weekly-period-number"></div></td></tr></tbody></table><br><hr>';
                 }
                 if ((document.getElementById('weekly')).checked) {
-                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="weekly-selected-pay-frequency">Weekly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="weekly-pay-start-date" id="weekly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_weekly %}<option value="{{a.start_date}} : {{a.end_date}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="weekly-period-number"></div></td></tr></tbody></table><br><hr>';
+                    start_date_tables += '<table class="table table-hover"><tbody><tr><td>Pay Frequency</td><td id="weekly-selected-pay-frequency">Weekly</td></tr><tr><td>Start Date - End Date</td><td><div class="form-group"><select name="weekly-pay-start-date" id="weekly-pay-start-date" class="form-select"><option value="" selected disabled>Start Date - End Date</option>{% for a in pay_period_record_weekly %}<option value="{{a.id}}">{{a.start_date}} - {{a.end_date}}</option>{% endfor %}</select></div></tr><tr><td>Period Number</td><td id="selected-period-number"><div class="form-group"><input type="numeric" class="form-control" id="period-number" name="weekly-period-number"></div></td></tr></tbody></table><br><hr>';
                 }
+
 
                 document.getElementById('start-date-tables').innerHTML = start_date_tables;
 
@@ -1674,8 +1687,10 @@
             $("#monthly").click(function () {
                 if ((document.getElementById('monthly')).checked) {
                     $("#pay-frequency1").html('<td id="pay-frequency1">Active</td>');
+                    $("#pay-frequency-check-box-monthly").val("Monthly:12:Active");
                 } else {
                     $("#pay-frequency1").html('<td id="pay-frequency1">Inactive</td>');
+                    $("#pay-frequency-check-box-").val("");
                 }
 
             });
@@ -1685,8 +1700,10 @@
                     $("#pay-frequency2").html('<td id="pay-frequency2">Active</td>');
 
                     $("#selected-pay-frequency").html('<td id="selected-pay-frequency">Fortnightly</td>');
+                    $("#pay-frequency-check-box-fortnightly").val("Fortnightly:26:Active");
                 } else {
                     $("#pay-frequency2").html('<td id="pay-frequency2">Inactive</td>');
+                    $("#pay-frequency-check-box-fortnightly").val("");
                 }
             });
 
@@ -1695,8 +1712,10 @@
                     $("#pay-frequency3").html('<td id="pay-frequency3">Active</td>');
 
                     $("#selected-pay-frequency").html('<td id="selected-pay-frequency">Bi-Weekly</td>');
+                    $("#pay-frequency-check-box-bi-weekly").val("Bi-Weekly:24:Active");
                 } else {
                     $("#pay-frequency3").html('<td id="pay-frequency3">Inactive</td>');
+                    $("#pay-frequency-check-box-bi-weekly").val("");
                 }
             });
 
@@ -1705,8 +1724,10 @@
                     $("#pay-frequency4").html('<td id="pay-frequency4">Active</td>');
 
                     $("#selected-pay-frequency").html('<td id="selected-pay-frequency">Weekly</td>');
+                    $("#pay-frequency-check-box-weekly").val("Weekly:52:Active");
                 } else {
                     $("#pay-frequency4").html('<td id="pay-frequency4">Inactive</td>');
+                    $("#pay-frequency-check-box-weekly").val("");
                 }
             });
             function hide() {

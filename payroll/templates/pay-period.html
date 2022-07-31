@@ -51,6 +51,7 @@
     </nav>
 
     <div class="container">
+        <h1>{{p_id}}</h1>
         <h2>Create Pay Period</h2>
         <form method="post" action="{%url 'createPayPeriod'%}" role="form">
             {% csrf_token %} {{form}}
