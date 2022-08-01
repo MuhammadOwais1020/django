@@ -43,7 +43,8 @@
         }
 
         .create-business,
-        .create-employee {
+        .create-employee,
+        .show-business-list {
             display: none;
         }
 
@@ -434,7 +435,43 @@
 
                 </div>
                 <!-- Show Business List -->
-                <div class="show-business-list"></div>
+                <div class="show-business-list">
+                    <h2>All Business</h2>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Business Name</th>
+                                <th>Street 1</th>
+                                <th>City</th>
+                                <th>Parish</th>
+                                <th>Country</th>
+                                <th>TRN</th>
+                                <th>NIS</th>
+                                <th>Business Start Date</th>
+                                <th>User/Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b_record in business_records %}
+                            {% for b in b_record %}
+                            <tr>
+                                <td>{{b.business_name}}</td>
+                                <td>{{b.street_1}}</td>
+                                <td>{{b.city}}</td>
+                                <td>{{b.parish}}</td>
+                                <td>{{b.country}}</td>
+                                <td>{{b.tax_registration_number}}</td>
+                                <td>{{b.national_insurnce_scheme}}</td>
+                                <td>{{b.business_start_date}}</td>
+                                {% for u in user_record %}
+                                <td>{{u.first_name}} {{u.last_name}}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
                 <!-- Create Employee -->
                 <div class="create-employee">
                     <h1>Add Employee</h1>
