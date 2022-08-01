@@ -31,5 +31,6 @@ urlpatterns = [
     path('adminLogout', pApp.adminLogout, name="adminLogout"),
     path('createBusiness', pApp.createBusiness, name='createBusiness'),
     path('payPeriod', pApp.payPeriod, name="payPeriod"),
-    path('createPayPeriod', pApp.createPayPeriod, name="createPayPeriod")
+    path('createPayPeriod', pApp.createPayPeriod, name="createPayPeriod"),
+    path('businessView', pApp.businessView, name="businessView")
 ]

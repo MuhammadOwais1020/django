@@ -354,6 +354,57 @@ def createPayPeriod(request):
     return render(request, "pay-period.html", data)
 
 
+
+# business view
+def businessView(request):
+    if request.method == "POST":
+        business_id = request.POST.get('business-id')
+
+        business_record = businesses.objects.filter(id=business_id)
+        
+        for b in business_record:
+            user_id = b.user_id
+        
+        user_record = users.objects.filter(id=user_id)
+
+        payroll_record = payroll.objects.filter(business_id=business_id)
+        pay_period_ids = []
+        for id in payroll_record:
+            pay_period_ids.append(id.pay_period_id)
+
+        bank_record = company_banking_details.objects.filter(business_id=business_id)
+
+        pay_period_record = []
+        for id in pay_period_ids:
+            pay_period_record.append(pay_period.objects.filter(id=id))
+
+        pay_period_record_monthly = ""
+        pay_period_record_fortnightly = ""
+        pay_period_record_bi_weekly = ""
+        pay_period_record_weekly = ""
+        pay_period_record_hourly = ""
+
+        pay_period_record_monthly = pay_period.objects.filter(pay_frequency = "Monthly")
+        pay_period_record_fortnightly = pay_period.objects.filter(pay_frequency = "Fortnightly")
+        pay_period_record_bi_weekly = pay_period.objects.filter(pay_frequency = "Bi-Weekly")
+        pay_period_record_weekly = pay_period.objects.filter(pay_frequency = "Weekly")
+        pay_period_record_hourly = pay_period.objects.filter(pay_frequency = "Hourly")
+
+        data = {
+            "pay_period_record":pay_period_record,
+            "bank_record":bank_record,
+            "user_record":user_record,
+            "business_record":business_record,
+            "pay_period_record_monthly":  pay_period_record_monthly,
+            "pay_period_record_fortnightly":  pay_period_record_fortnightly,
+            "pay_period_record_bi_weekly":  pay_period_record_bi_weekly,
+            "pay_period_record_weekly":  pay_period_record_weekly,
+            "pay_period_record_hourly":  pay_period_record_hourly
+        }
+        return render(request, "business-view.html", data)
+
+    return render(request, "business-view.html")
+
 # fetch busienss records
 def getBusinessRecords(user_id):
     # users

@@ -449,6 +449,7 @@
                                 <th>NIS</th>
                                 <th>Business Start Date</th>
                                 <th>User/Created</th>
+                                <th>View</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -466,6 +467,13 @@
                                 {% for u in user_record %}
                                 <td>{{u.first_name}} {{u.last_name}}</td>
                                 {% endfor %}
+                                <form method="post" action="{%url 'businessView'%}" role="form">
+                                    {% csrf_token %} {{form}}
+                                    <td>
+                                        <input type="hidden" name="business-id" value="{{b.id}}">
+                                        <button type="submit" class="btn btn-info">View</button>
+                                    </td>
+                                </form>
                             </tr>
                             {% endfor %}
                             {% endfor %}
