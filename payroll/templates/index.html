@@ -151,7 +151,7 @@
                 <div>
                     <button class="btn" id="d-create-business">Add Business</button>
                 </div>
-                {% if business == "y" %}
+                {% if b_id == "y" %}
                 <div>
                     <button class="btn" id="d-show-business-list">Show Business List</button>
                 </div>
@@ -212,17 +212,17 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="business-name">Business Name</label>
-                                        <input type="text" class="form-control" id="business-name"
-                                            name="business-name" />
+                                        <label for="business-name">Business Name *</label>
+                                        <input type="text" class="form-control" id="business-name" name="business-name"
+                                            required />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="street1">Street 1</label>
-                                        <input type="text" class="form-control" name="street1" id="street1" />
+                                        <label for="street1">Street 1 *</label>
+                                        <input type="text" class="form-control" name="street1" id="street1" required />
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -233,50 +233,52 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="city-town">City Town</label>
-                                        <input type="text" class="form-control" name="city-town" id="city-town" />
+                                        <label for="city-town">City Town *</label>
+                                        <input type="text" class="form-control" name="city-town" id="city-town"
+                                            required />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="postal-code">Postal Code</label>
-                                        <input type="text" class="form-control" name="postal-code" id="postal-code" />
+                                        <label for="postal-code">Postal Code *</label>
+                                        <input type="text" class="form-control" name="postal-code" id="postal-code"
+                                            required />
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="parish">Parish</label>
-                                        <input type="text" class="form-control" name="parish" id="parish" />
+                                        <label for="parish">Parish *</label>
+                                        <input type="text" class="form-control" name="parish" id="parish" required />
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="country">Country</label>
+                                        <label for="country">Country *</label>
                                         <input type="text" class="form-control" name="country" id="country"
-                                            value="Jamaica" />
+                                            value="Jamaica" required />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="TRN">Tax Registration Number</label>
-                                        <input type="numeric" name="TRN" class="form-control" id="TRN" />
+                                        <label for="TRN">Tax Registration Number *</label>
+                                        <input type="numeric" name="TRN" class="form-control" id="TRN" required />
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="NIS">National Insurance Scheme</label>
-                                        <input type="numeric" name="NIS" class="form-control" id="NIS" />
+                                        <label for="NIS">National Insurance Scheme *</label>
+                                        <input type="numeric" name="NIS" class="form-control" id="NIS" required />
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="business-start-date">Business Start Date</label>
+                                        <label for="business-start-date">Business Start Date *</label>
                                         <input type="date" name="business-start-date" class="form-control"
-                                            id="business-start-date" />
+                                            id="business-start-date" required />
                                     </div>
                                 </div>
                             </div>
@@ -379,32 +381,36 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="account-name">Name on Account</label>
-                                        <input type="text" class="form-control" name="account-name" id="account-name">
+                                        <label for="account-name">Name on Account *</label>
+                                        <input type="text" class="form-control" name="account-name" id="account-name"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="account-number">Account Number</label>
+                                        <label for="account-number">Account Number *</label>
                                         <input type="numeric" class="form-control" name="account-number"
-                                            id="account-number">
+                                            id="account-number" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div class="form-group"><label for="bank-name">Bank Name</label>
-                                        <input type="text" class="form-control" id="bank-name" name="bank-name">
+                                    <div class="form-group"><label for="bank-name">Bank Name *</label>
+                                        <input type="text" class="form-control" id="bank-name" name="bank-name"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group"><label for="branch-name">Branch Name</label>
-                                        <input type="text" class="form-control" id="branch-name" name="branch-name">
+                                    <div class="form-group"><label for="branch-name">Branch Name *</label>
+                                        <input type="text" class="form-control" id="branch-name" name="branch-name"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group"><label for="account-type">Account Type</label>
-                                        <input type="text" class="form-control" id="account-type" name="account-type">
+                                    <div class="form-group"><label for="account-type">Account Type *</label>
+                                        <input type="text" class="form-control" id="account-type" name="account-type"
+                                            required>
                                     </div>
                                 </div>
                             </div>

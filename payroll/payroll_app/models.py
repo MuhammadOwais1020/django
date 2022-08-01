@@ -51,7 +51,7 @@ class company_banking_details(models.Model):
     account_name = models.CharField(max_length=50)
     bank_name = models.CharField(max_length=50)
     branch = models.CharField(max_length=50)
-    account_number = models.IntegerField(max_length=30)
+    account_number = models.BigIntegerField()
     account_type = models.CharField(max_length=50)
 
 # employee 
@@ -65,18 +65,18 @@ class employee(models.Model):
     date_of_birth = models.DateField()
     TRN = models.IntegerField()
     NIS = models.IntegerField()
-    contact_number = models.IntegerField(max_length=30)
+    contact_number = models.BigIntegerField()
     personal_email_address = models.EmailField()
     next_of_kin = models.CharField(max_length=50)
-    contact_number_of_next_of_kin = models.IntegerField(max_length=30)
+    contact_number_of_next_of_kin = models.BigIntegerField()
     address_line_1 = models.CharField(max_length=50)
     address_line_2 = models.CharField(max_length=50)
     city_town = models.CharField(max_length=50)
     postal_code = models.IntegerField()
     parish = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
-    user_id = models.IntegerField(max_length=50)
-    business_id = models.IntegerField(max_length=50)
+    user_id = models.IntegerField()
+    business_id = models.IntegerField()
 
 # earning type
 class earnings_type(models.Model):

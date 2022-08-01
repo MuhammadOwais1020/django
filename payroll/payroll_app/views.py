@@ -2,7 +2,7 @@ import email
 from xml.dom.minidom import NamedNodeMap
 from django.http import HttpResponse
 from django.shortcuts import render
-from payroll.payroll_app.models import payroll
+from payroll_app.models import payroll
 from payroll_app.models import pay_frequency
 from payroll_app.models import users
 from payroll_app.models import earnings_type
@@ -128,9 +128,9 @@ def userLogin(request):
         for b in is_business:
             business = b.id
 
-        if business != "":
+        if business != "n":
             business = "y"
-    
+
     pay_period_record_monthly = ""
     pay_period_record_fortnightly = ""
     pay_period_record_bi_weekly = ""
@@ -143,6 +143,8 @@ def userLogin(request):
     pay_period_record_weekly = pay_period.objects.filter(pay_frequency = "Weekly")
     pay_period_record_hourly = pay_period.objects.filter(pay_frequency = "Hourly")
 
+    # fetch business records
+    business_record = getBusinessRecords(id)
 
     data={
         "login" : login,
@@ -158,7 +160,11 @@ def userLogin(request):
         "pay_period_record_fortnightly":  pay_period_record_fortnightly,
         "pay_period_record_bi_weekly":  pay_period_record_bi_weekly,
         "pay_period_record_weekly":  pay_period_record_weekly,
-        "pay_period_record_hourly":  pay_period_record_hourly
+        "pay_period_record_hourly":  pay_period_record_hourly,
+        "user_record": business_record['user_record'],
+        "bank_details_record": business_record['bank_details_record'],
+        "business_records": business_record['business_records'],
+        "payroll_records": business_record['payroll_records']
     }
 
     return render(request, "index.html", data)
@@ -182,7 +188,7 @@ def createBusiness(request):
         account_type = request.POST.get('account-type')
         # business information
         business_name = request.POST.get('business-name')
-        street_1 = request.POST.get('stree1')
+        street_1 = request.POST.get('street1')
         street_2 = request.POST.get('street2')
         city_town = request.POST.get('city-town')
         postal_code = request.POST.get('postal-code')
@@ -232,11 +238,12 @@ def createBusiness(request):
         if pay_period_id_weekly != "":
             pay_period_id_lst.append(pay_period_id_weekly)
         
+        print(pay_period_id_lst)
         # company banking details
         account_name = request.POST.get('account-name')
         account_number = request.POST.get('account-number')
         bank_name = request.POST.get('bank-name')
-        branch_name = request.POST.get('branch_name')
+        branch_name = request.POST.get('branch-name')
         account_type = request.POST.get('account-type')
 
         # insert data into business table 
@@ -252,10 +259,16 @@ def createBusiness(request):
         # insert data into company banking details
         cbd =  company_banking_details(business_id=business_id, account_name=account_name, bank_name=bank_name, branch=branch_name, account_number=account_number, account_type=account_type)
         cbd.save()
-
+        
         # insert data into payroll table
         for payperiodid in pay_period_id_lst:
-            prd = payroll(business_id=business_id, pay_period_id=payperiodid, status="Active")
+            # fetch payroll last id
+            payroll_id = 1
+            payroll_record = payroll.objects.raw('SELECT * FROM payroll_app_payroll ORDER BY id DESC LIMIT 1')
+            for a in payroll_record:
+                if a.id != "":
+                    payroll_id = a.id
+            prd = payroll(id=payroll_id, business_id=business_id, pay_period_id=payperiodid, status="Active")
             prd.save()
         
         # insert data into pay_frequency table
@@ -265,6 +278,21 @@ def createBusiness(request):
             f_p_s = payfrequencycheckbox.split(':')
             pf = pay_frequency(pay_frequency=f_p_s[0], number_of_periods=f_p_s[1], status=f_p_s[2])
             pf.save()
+    
+    pay_period_record_monthly = ""
+    pay_period_record_fortnightly = ""
+    pay_period_record_bi_weekly = ""
+    pay_period_record_weekly = ""
+    pay_period_record_hourly = ""
+
+    pay_period_record_monthly = pay_period.objects.filter(pay_frequency = "Monthly")
+    pay_period_record_fortnightly = pay_period.objects.filter(pay_frequency = "Fortnightly")
+    pay_period_record_bi_weekly = pay_period.objects.filter(pay_frequency = "Bi-Weekly")
+    pay_period_record_weekly = pay_period.objects.filter(pay_frequency = "Weekly")
+    pay_period_record_hourly = pay_period.objects.filter(pay_frequency = "Hourly")
+
+    # fetch business records
+    business_record = getBusinessRecords(user_id)
 
     data = {
         "login": "success",
@@ -273,7 +301,17 @@ def createBusiness(request):
         "first_name": first_name,
         "last_name":last_name,
         "mobile_number": mobile_number,
-        "account_type": account_type
+        "account_type": account_type,
+        "pay_period_record_monthly":  pay_period_record_monthly,
+        "pay_period_record_fortnightly":  pay_period_record_fortnightly,
+        "pay_period_record_bi_weekly":  pay_period_record_bi_weekly,
+        "pay_period_record_weekly":  pay_period_record_weekly,
+        "pay_period_record_hourly":  pay_period_record_hourly,
+        "b_id":"y",
+        "user_record": business_record['user_record'],
+        "bank_details_record": business_record['bank_details_record'],
+        "business_records": business_record['business_records'],
+        "payroll_records": business_record['payroll_records']
     }
     return render(request, 'index.html', data)
 
@@ -314,3 +352,80 @@ def createPayPeriod(request):
     }
 
     return render(request, "pay-period.html", data)
+
+
+# fetch busienss records
+def getBusinessRecords(user_id):
+    # users
+    user_record = users.objects.filter(id=user_id)
+    # businesses
+    business_record = businesses.objects.filter(user_id=user_id)
+
+    # bank information
+    business_ids = []
+    for id in business_record:
+        business_ids.append(id.id)
+    
+
+    print(business_ids)
+    bank_details_record = []
+    business_records = []
+    for i in business_ids:
+        bank_details_record.append(company_banking_details.objects.filter(business_id = i))
+        business_records.append(businesses.objects.filter(id=i))
+
+    payroll_records = []
+    for n in business_ids:
+        payroll_records.append(payroll.objects.filter(business_id=n))
+    
+    b_data = {
+        "user_record": user_record,
+        "bank_details_record": bank_details_record,
+        "business_records": business_records,
+        "payroll_records": payroll_records
+    }
+
+    return b_data
+    # # print users record
+    # for u in user_record:
+    #     print('------------')
+    #     print(u.id)
+    #     print(u.first_name)
+    #     print(u.last_name)
+    #     print(u.email)
+    #     print(u.mobile_number)
+    #     print(u.password)
+    #     print(u.account_type)
+    #     print('--------------------')
+    
+    # # print business record
+    # for b_record in business_records:
+    #     for b in b_record:
+    #         print('------------')
+    #         print(b.id)
+    #         print(b.business_name)
+    #         print(b.street_1)
+    #         print(b.street2)
+    #         print(b.city)
+    #         print(b.postal_code)
+    #         print(b.parish)
+    #         print(b.country)
+    #         print(b.tax_registration_number)
+    #         print(b.national_insurnce_scheme)
+    #         print(b.business_start_date)
+    #         print(b.user_id)
+    #         print('----------------')
+    
+    # for bank_info_record in bank_details_record:
+    #     for br in bank_info_record:
+    #         print('-----------------')
+    #         print(br.id)
+    #         print(br.business_id)
+    #         print(br.account_name)
+    #         print(br.bank_name)
+    #         print(br.branch)
+    #         print(br.account_number)
+    #         print(br.account_type)
+    
+    
+    
