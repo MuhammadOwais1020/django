@@ -23,17 +23,20 @@ def home(request):
 
     #print(*found, sep='\n')
     links=[]
-    headers=[]
+    headers_=[]
     ### print headers and hrefs
     headers = soup.find_all("a", {"class": "gs-c-promo-heading nw-o-link gs-o-bullet__text gs-o-faux-block-link__overlay-link gel-pica-bold gs-u-pl-@xs"})
     for link in headers:
-        print("LINK: ", link['href'])
+        # print("LINK: ", link['href'])
         links.append(link['href'])
-        t = link.find('span',{'class':'gs-c-promo-heading_title get-pica-bold'})
-        print('HEADER: ', t.text)
-        headers.append(t.text)
+        t = link.find('span',{'class':'gs-c-promo-heading__title gel-pica-bold'})
+        # print('HEADER: ', t.text)
+        headers_.append(t.text)
     
-    print(links)
-    print(headers)
+    list_group = zip(links, headers_)
+    
+    data = {
+       "list_group":list_group
+    }
 
-    return render(request, "index.html")
+    return render(request, "index.html", data)
