@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from webScrapping import views as wApp
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', wApp.home, name="home"),
+    path("home", wApp.home, name="home")
 ]
