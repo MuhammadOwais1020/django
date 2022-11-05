@@ -15,7 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from world import views as w_app
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', w_app.home, name="home"),
+    path('index/<username>/', w_app.index, name="index"),
+    path('changePassword/<username>/', w_app.changePassword, name="changePassword"),
+    path('logOut', w_app.logOut, name="logOut"),
+    path('map/<username>/', w_app.map, name="map"),
+    path('updateDetails/<username>/', w_app.updateDetails, name="updateDetails"),
+    path('login', w_app.login, name="login"),
+    path('updateInfo/<username>/', w_app.updateInfo, name="updateInfo")
 ]
